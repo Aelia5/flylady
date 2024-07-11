@@ -1,0 +1,29 @@
+const mongoose = require('mongoose');
+const validator = require('validator');
+const houseSchema = require('house')
+
+const userSchema= new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: [2, 'Минимальное число символов: 2'],
+    maxlength: [20, 'Максимальное число символов: 20']
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: (v) => validator.isEmail(v),
+      message: 'Введён некорректный email.',
+    },
+  },
+  password: {
+    type: String,
+    require: true,
+    select: false,
+  },
+  houses: [houseSchema]
+})
+
+module.exports = mongoose.model('user', userSchema);
