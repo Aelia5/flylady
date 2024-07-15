@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const taskSchema = require('task');
+const {taskSchema} = require('./task');
 
 const roomSchema= new mongoose.Schema({
   name: {
@@ -11,4 +11,10 @@ const roomSchema= new mongoose.Schema({
   tasks: [taskSchema]
 })
 
-module.exports = mongoose.model('room', roomSchema);
+
+const Room = mongoose.model('room', roomSchema);
+
+module.exports = {
+  roomSchema,
+  Room
+}
