@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const {roomSchema} = require('./room');
 
 const houseSchema= new mongoose.Schema({
   name: {
@@ -8,8 +7,16 @@ const houseSchema= new mongoose.Schema({
     minlength: [2, 'Минимальное число символов: 2'],
     maxlength: [30, 'Максимальное число символов: 30']
   },
-  rooms: [roomSchema]
+  rooms: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'room',
+    required: true
+  }],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true
+  },
 })
 
-const House = mongoose.model('house', houseSchema);
-module.exports={House, houseSchema}
+module.exports=mongoose.model('house', houseSchema);

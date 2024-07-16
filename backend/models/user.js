@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const {houseSchema} = require('./house');
 
 const userSchema= new mongoose.Schema({
   name: {
@@ -23,7 +22,6 @@ const userSchema= new mongoose.Schema({
     require: true,
     select: false,
   },
-  houses: [houseSchema],
 })
 
 module.exports = mongoose.model('user', userSchema);
