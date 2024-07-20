@@ -9,6 +9,4 @@ router.get('/me', getCurrentUser);
 
 router.patch('/me', validateUserName, validateEmail, updateUser);
 
-router.post('/me/newhouse')
-
 module.exports = router;

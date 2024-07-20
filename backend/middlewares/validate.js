@@ -6,6 +6,12 @@ module.exports.validateUserName = celebrate({
   }).unknown(true),
 });
 
+module.exports.validateName = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+  }).unknown(true),
+});
+
 module.exports.validateEmail = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
@@ -25,20 +31,8 @@ module.exports.validateTask = celebrate({
   })
 })
 
-module.exports.validateRoom = celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-  }).unknown(true),
-})
-
-module.exports.validateHouse = celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-  }).unknown(true),
-})
-
 module.exports.validateId = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().length(24).hex().required(),
+    id: Joi.string().length(24).hex().required(),
   }),
 });

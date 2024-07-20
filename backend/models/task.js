@@ -11,6 +11,9 @@ const taskSchema= new mongoose.Schema({
     type: Number,
     required: true,
   },
+  last: {
+    type: Date
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
