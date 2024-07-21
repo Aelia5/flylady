@@ -1,19 +1,24 @@
 const mongoose = require('mongoose');
 
-const roomSchema= new mongoose.Schema({
+const roomSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     minlength: [2, 'Минимальное число символов: 2'],
-    maxlength: [30, 'Максимальное число символов: 30']
+    maxlength: [30, 'Максимальное число символов: 30'],
   },
-  tasks: [{
+  tasks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'task',
+      required: true,
+    },
+  ],
+  house: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'task',
-    required: true
-  }],
-
-})
-
+    ref: 'house',
+    required: true,
+  },
+});
 
 module.exports = mongoose.model('room', roomSchema);
