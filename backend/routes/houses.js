@@ -1,22 +1,22 @@
 const router = require('express').Router();
-const { validateName, validateId } = require('../middlewares/validate');
+const { validatePlace, validateId } = require('../middlewares/validate');
 
 const {
   createHouse,
   getMyHouses,
   deleteHouse,
-  updateHouse,
+  renameHouse,
   createRoom,
 } = require('../controllers/houses');
 
-router.post('/newhouse', validateName, createHouse);
+router.post('/new-house', validatePlace, createHouse);
 
-router.get('/findmyhouses', getMyHouses);
+router.get('/find-my-houses', getMyHouses);
 
 router.delete('/:id', validateId, deleteHouse);
 
-router.patch('/:id', validateId, validateName, updateHouse);
+router.patch('/:id', validateId, validatePlace, renameHouse);
 
-router.patch('/:id/newroom', validateId, validateName, createRoom);
+router.patch('/:id/new-room', validateId, validatePlace, createRoom);
 
 module.exports = router;

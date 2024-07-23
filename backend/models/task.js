@@ -1,25 +1,24 @@
 const mongoose = require('mongoose');
 
-const taskSchema= new mongoose.Schema({
+const taskSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     minlength: [2, 'Минимальное число символов: 2'],
-    maxlength: [300, 'Максимальное число символов: 300']
+    maxlength: [300, 'Максимальное число символов: 300'],
   },
   frequency: {
     type: Number,
     required: true,
   },
   last: {
-    type: Date
+    type: Date,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: true
+    required: true,
   },
-
-})
+});
 
 module.exports = mongoose.model('task', taskSchema);

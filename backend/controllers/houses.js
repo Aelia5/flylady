@@ -2,17 +2,15 @@ const House = require('../models/house');
 const Room = require('../models/room');
 
 const ValidationError = require('../errors/validation-err');
-//const NotFoundError = require('../errors/not-found-err');
-//const ForbiddenError = require('../errors/forbidden-err');
 
 const { validationErrorMessage } = require('../utils/constants');
 
-//const notFoundMessage = 'Такого дома не существует';
-//const forbiddenMessage = 'Вы не можете удалить чужой дом';
-
 const { SUCCESS_CODE } = require('../utils/constants');
 
-const { checkHouse } = require('../middlewares/check');
+const { checkAvailability } = require('../middlewares/check');
+
+const notFoundMessage = 'Такого дома не существует';
+const forbiddenMessage = 'Вы не можете редактировать или удалять чужой дом';
 
 module.exports.createHouse = (req, res, next) => {
   const { name } = req.body;
@@ -31,7 +29,7 @@ module.exports.createHouse = (req, res, next) => {
 module.exports.getMyHouses = (req, res, next) => {
   House.find({ owner: req.user._id })
     .populate('owner')
-    .populate('rooms')
+    .populate({ path: 'rooms', populate: { path: 'tasks' } })
     .then((houses) => res.status(SUCCESS_CODE).send(houses))
     .catch((err) => {
       next(err);
@@ -40,7 +38,9 @@ module.exports.getMyHouses = (req, res, next) => {
 
 module.exports.deleteHouse = (req, res, next) => {
   House.findById(req.params.id)
-    .then((house) => checkHouse(house, req.user._id))
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
     .then((house) => {
       House.findByIdAndDelete(house._id)
         .then(() => res.status(SUCCESS_CODE).send(house))
@@ -55,9 +55,11 @@ module.exports.deleteHouse = (req, res, next) => {
     });
 };
 
-module.exports.updateHouse = (req, res, next) => {
+module.exports.renameHouse = (req, res, next) => {
   House.findById(req.params.id)
-    .then((house) => checkHouse(house, req.user._id))
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
     .then((house) => {
       House.findByIdAndUpdate(
         house._id,
@@ -78,12 +80,18 @@ module.exports.updateHouse = (req, res, next) => {
 
 module.exports.createRoom = (req, res, next) => {
   const { name } = req.body;
-  Room.create({ name, house: req.params.id })
+  Room.create({ name, house: req.params.id, owner: req.user._id })
     .then((room) => {
       House.findById(req.params.id)
-        .then((house) => checkHouse(house, req.user._id))
+        .then((house) =>
+          checkAvailability(
+            house,
+            req.user._id,
+            notFoundMessage,
+            forbiddenMessage
+          )
+        )
         .then((house) => {
-          console.log(room);
           House.findByIdAndUpdate(
             house._id,
             { $push: { rooms: room } },
