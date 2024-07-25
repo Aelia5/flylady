@@ -1,5 +1,6 @@
 const House = require('../models/house');
 const Room = require('../models/room');
+const Task = require('../models/task');
 
 const ValidationError = require('../errors/validation-err');
 
@@ -38,11 +39,18 @@ module.exports.getMyHouses = (req, res, next) => {
 
 module.exports.deleteHouse = (req, res, next) => {
   House.findById(req.params.id)
+    .populate('rooms')
     .then((house) =>
       checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
     )
     .then((house) => {
-      House.findByIdAndDelete(house._id)
+      const tasksToDelete = [];
+      house.rooms.forEach((room) => {
+        tasksToDelete.push(...room.tasks);
+      });
+      Task.deleteMany({ _id: { $in: tasksToDelete } })
+        .then(() => Room.deleteMany({ house: house._id }))
+        .then(() => House.findByIdAndDelete(house._id))
         .then(() => res.status(SUCCESS_CODE).send(house))
         .catch(next);
     })
@@ -80,29 +88,25 @@ module.exports.renameHouse = (req, res, next) => {
 
 module.exports.createRoom = (req, res, next) => {
   const { name } = req.body;
-  Room.create({ name, house: req.params.id, owner: req.user._id })
-    .then((room) => {
-      House.findById(req.params.id)
-        .then((house) =>
-          checkAvailability(
-            house,
-            req.user._id,
-            notFoundMessage,
-            forbiddenMessage
-          )
-        )
-        .then((house) => {
+  House.findById(req.params.id)
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
+    .then((house) =>
+      Room.create({ name, house: house._id, owner: house.owner }).then(
+        (room) => {
           House.findByIdAndUpdate(
             house._id,
             { $push: { rooms: room } },
             { new: true, runValidators: true }
           )
-            .populate('rooms')
             .populate('owner')
+            .populate('rooms')
             .then((house) => res.status(SUCCESS_CODE).send(house))
             .catch(next);
-        });
-    })
+        }
+      )
+    )
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
         next(new ValidationError(err.message || validationErrorMessage));

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { dateTransform } = require('../utils/date');
+console.log(dateTransform());
 
 const taskSchema = new mongoose.Schema({
   name: {
@@ -13,6 +15,8 @@ const taskSchema = new mongoose.Schema({
   },
   last: {
     type: Date,
+    default: dateTransform(),
+    required: true,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

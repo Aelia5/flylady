@@ -18,6 +18,7 @@ module.exports.deleteRoom = (req, res, next) => {
     )
     .then((room) => {
       Room.findByIdAndDelete(room._id)
+        .then((room) => Task.deleteMany({ _id: { $in: room.tasks } }))
         .then(() => res.status(SUCCESS_CODE).send(room))
         .catch(next);
     })
@@ -55,29 +56,23 @@ module.exports.renameRoom = (req, res, next) => {
 
 module.exports.createTask = (req, res, next) => {
   const { name, frequency } = req.body;
-  Task.create({ name, frequency, owner: req.user._id })
-    .then((task) => {
-      Room.findById(req.params.id)
-        .then((room) =>
-          checkAvailability(
-            room,
-            req.user._id,
-            notFoundMessage,
-            forbiddenMessage
-          )
+  Room.findById(req.params.id)
+    .then((room) =>
+      checkAvailability(room, req.user._id, notFoundMessage, forbiddenMessage)
+    )
+    .then((room) =>
+      Task.create({ name, frequency, owner: room.owner }).then((task) => {
+        Room.findByIdAndUpdate(
+          room._id,
+          { $push: { tasks: task } },
+          { new: true, runValidators: true }
         )
-        .then((room) => {
-          Room.findByIdAndUpdate(
-            room._id,
-            { $push: { tasks: task } },
-            { new: true, runValidators: true }
-          )
-            .populate('tasks')
-            .populate('owner')
-            .then((room) => res.status(SUCCESS_CODE).send(room))
-            .catch(next);
-        });
-    })
+          .populate('owner')
+          .populate('tasks')
+          .then((room) => res.status(SUCCESS_CODE).send(room))
+          .catch(next);
+      })
+    )
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
         next(new ValidationError(err.message || validationErrorMessage));
@@ -86,3 +81,39 @@ module.exports.createTask = (req, res, next) => {
       }
     });
 };
+
+// module.exports.createTask = (req, res, next) => {
+//   const { name, frequency } = req.body;
+//   Task.create({ name, frequency, owner: req.user._id })
+//     .then((task) => {
+//       Room.findById(req.params.id)
+//         .then((room) =>
+//           checkAvailability(
+//             room,
+//             req.user._id,
+//             notFoundMessage,
+//             forbiddenMessage
+//           )
+//         )
+//         .then((room) => {
+//           Room.findByIdAndUpdate(
+//             room._id,
+//             { $push: { tasks: task } },
+//             { new: true, runValidators: true }
+//           )
+//             .populate('tasks')
+//             .populate('owner')
+
+//             .then((room) => res.status(SUCCESS_CODE).send(room))
+//             .catch(next);
+//         })
+//         .catch(next);
+//     })
+//     .catch((err) => {
+//       if (err.name === 'CastError' || err.name === 'ValidationError') {
+//         next(new ValidationError(err.message || validationErrorMessage));
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
