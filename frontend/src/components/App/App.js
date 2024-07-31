@@ -7,12 +7,13 @@ import {
   // useNavigate,
   // useLocation,
 } from "react-router-dom";
+import Header from "../Header/Header";
 
 function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<div>Тест</div>} />
+        <Route path="/" element={<Header />} />
       </Routes>
     </div>
   );
