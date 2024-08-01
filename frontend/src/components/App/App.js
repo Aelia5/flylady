@@ -10,10 +10,15 @@ import {
 import Header from "../Header/Header";
 
 function App() {
+  const [loggedIn, setLoggedIn] = React.useState(
+    // JSON.parse(localStorage.getItem("loggedIn")) ||
+    true
+  );
+
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<Header />} />
+        <Route path="/" element={<Header loggedIn={loggedIn} />} />
       </Routes>
     </div>
   );
