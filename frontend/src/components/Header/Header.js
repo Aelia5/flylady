@@ -1,8 +1,19 @@
 import "./Header.css";
+import React from "react";
 import { useNavigate, Link, NavLink } from "react-router-dom";
 
 function Header({ loggedIn }) {
   const navigate = useNavigate();
+  const [menuOpened, setMenuOpened] = React.useState(false);
+
+  function openBurgerMenu() {
+    setMenuOpened(true);
+  }
+
+  function closeBurgerMenu() {
+    setMenuOpened(false);
+  }
+
   return (
     <header className="header">
       <button
@@ -11,7 +22,7 @@ function Header({ loggedIn }) {
           navigate("/", { replace: true });
         }}
       />
-      <div className="header__menu">
+      <div className={`header__menu ${menuOpened ? "" : "invisible"}`}>
         {loggedIn ? (
           <nav>
             <ul className="header__nav">
@@ -82,7 +93,14 @@ function Header({ loggedIn }) {
           </ul>
         </div>
       </div>
-      <button className="header__burger-menu"></button>
+      <button
+        className={`header__button ${
+          menuOpened
+            ? "header__button_type_close"
+            : "header__button_type_burger"
+        }`}
+        onClick={menuOpened ? closeBurgerMenu : openBurgerMenu}
+      ></button>
     </header>
   );
 }
