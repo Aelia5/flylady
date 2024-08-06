@@ -8,6 +8,7 @@ import {
   // useLocation,
 } from "react-router-dom";
 import Header from "../Header/Header";
+import Main from "../Main/Main";
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(
@@ -18,7 +19,15 @@ function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<Header loggedIn={loggedIn} />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Header loggedIn={loggedIn} />
+              <Main />
+            </>
+          }
+        />
       </Routes>
     </div>
   );

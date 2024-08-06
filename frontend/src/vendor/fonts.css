@@ -21,3 +21,11 @@
     font-display: swap;
     src: url(./fonts/Inter-Black.woff) format('woff')
 }
+
+@font-face {
+    font-family: 'Florida Vibes';
+    font-style: italic;
+    font-weight: 900;
+    font-display: swap;
+    src: url(./fonts/Florida-Vibes.otf) format('otf')
+}

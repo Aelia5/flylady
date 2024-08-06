@@ -14,6 +14,8 @@ function Header({ loggedIn }) {
     setMenuOpened(false);
   }
 
+  console.log(menuOpened);
+
   return (
     <header className="header">
       <button
@@ -22,7 +24,13 @@ function Header({ loggedIn }) {
           navigate("/", { replace: true });
         }}
       />
-      <div className={`header__menu ${menuOpened ? "" : "invisible"}`}>
+      <div
+        className={menuOpened ? "header__overlay" : ""}
+        onClick={menuOpened ? closeBurgerMenu : ""}
+      ></div>
+      <div
+        className={`header__menu ${menuOpened ? "header__menu_opened" : ""}`}
+      >
         {loggedIn ? (
           <nav>
             <ul className="header__nav">
