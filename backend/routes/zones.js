@@ -5,11 +5,9 @@ const {
   validateTask,
 } = require('../middlewares/validate');
 
-const { deleteRoom, renameRoom, createTask } = require('../controllers/rooms');
+const { renameZone, createTask } = require('../controllers/zones');
 
-router.delete('/:id', validateId, deleteRoom);
-
-router.patch('/:id', validateId, validatePlace, renameRoom);
+router.patch('/:id', validateId, validatePlace, renameZone);
 
 router.patch('/:id/new-task', validateId, validateTask, createTask);
 

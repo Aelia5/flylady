@@ -8,7 +8,7 @@ const {
 } = require('../middlewares/validate');
 
 const houseRouter = require('./houses');
-const roomRouter = require('./rooms');
+const zoneRouter = require('./zones');
 const { auth } = require('../middlewares/auth');
 
 const NotFoundError = require('../errors/not-found-err');
@@ -25,7 +25,7 @@ router.post(
 router.use(auth);
 router.use('/users', userRouter);
 router.use('/houses', houseRouter);
-router.use('/rooms', roomRouter);
+router.use('/zones', zoneRouter);
 router.use('/tasks', taskRouter);
 router.use('*', (req, res, next) => {
   const error = new NotFoundError('Страница по указанному маршруту не найдена');

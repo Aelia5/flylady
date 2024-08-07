@@ -1,4 +1,4 @@
-const Room = require('../models/room');
+const Zone = require('../models/zone');
 const Task = require('../models/task');
 
 const ValidationError = require('../errors/validation-err');
@@ -11,38 +11,18 @@ const { checkAvailability } = require('../middlewares/check');
 const notFoundMessage = 'Такой комнаты не существует';
 const forbiddenMessage = 'Вы не можете редактировать или удалять чужую комнату';
 
-module.exports.deleteRoom = (req, res, next) => {
-  Room.findById(req.params.id)
-    .then((room) =>
-      checkAvailability(room, req.user._id, notFoundMessage, forbiddenMessage)
+module.exports.renameZone = (req, res, next) => {
+  Zone.findById(req.params.id)
+    .then((zone) =>
+      checkAvailability(zone, req.user._id, notFoundMessage, forbiddenMessage)
     )
-    .then((room) => {
-      Room.findByIdAndDelete(room._id)
-        .then((room) => Task.deleteMany({ _id: { $in: room.tasks } }))
-        .then(() => res.status(SUCCESS_CODE).send(room))
-        .catch(next);
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new ValidationError(validationErrorMessage));
-      } else {
-        next(err);
-      }
-    });
-};
-
-module.exports.renameRoom = (req, res, next) => {
-  Room.findById(req.params.id)
-    .then((room) =>
-      checkAvailability(room, req.user._id, notFoundMessage, forbiddenMessage)
-    )
-    .then((room) => {
-      Room.findByIdAndUpdate(
-        room._id,
+    .then((zone) => {
+      Zone.findByIdAndUpdate(
+        zone._id,
         { name: req.body.name },
         { new: true, runValidators: true }
       )
-        .then((room) => res.status(SUCCESS_CODE).send(room))
+        .then((zone) => res.status(SUCCESS_CODE).send(zone))
         .catch(next);
     })
     .catch((err) => {
@@ -56,20 +36,20 @@ module.exports.renameRoom = (req, res, next) => {
 
 module.exports.createTask = (req, res, next) => {
   const { name, frequency } = req.body;
-  Room.findById(req.params.id)
-    .then((room) =>
-      checkAvailability(room, req.user._id, notFoundMessage, forbiddenMessage)
+  Zone.findById(req.params.id)
+    .then((zone) =>
+      checkAvailability(zone, req.user._id, notFoundMessage, forbiddenMessage)
     )
-    .then((room) =>
-      Task.create({ name, frequency, owner: room.owner }).then((task) => {
-        Room.findByIdAndUpdate(
-          room._id,
+    .then((zone) =>
+      Task.create({ name, frequency, owner: zone.owner }).then((task) => {
+        Zone.findByIdAndUpdate(
+          zone._id,
           { $push: { tasks: task } },
           { new: true, runValidators: true }
         )
           .populate('owner')
           .populate('tasks')
-          .then((room) => res.status(SUCCESS_CODE).send(room))
+          .then((zone) => res.status(SUCCESS_CODE).send(zone))
           .catch(next);
       })
     )
@@ -86,25 +66,25 @@ module.exports.createTask = (req, res, next) => {
 //   const { name, frequency } = req.body;
 //   Task.create({ name, frequency, owner: req.user._id })
 //     .then((task) => {
-//       Room.findById(req.params.id)
-//         .then((room) =>
+//       Zone.findById(req.params.id)
+//         .then((zone) =>
 //           checkAvailability(
-//             room,
+//             zone,
 //             req.user._id,
 //             notFoundMessage,
 //             forbiddenMessage
 //           )
 //         )
-//         .then((room) => {
-//           Room.findByIdAndUpdate(
-//             room._id,
+//         .then((zone) => {
+//           Zone.findByIdAndUpdate(
+//             zone._id,
 //             { $push: { tasks: task } },
 //             { new: true, runValidators: true }
 //           )
 //             .populate('tasks')
 //             .populate('owner')
 
-//             .then((room) => res.status(SUCCESS_CODE).send(room))
+//             .then((zone) => res.status(SUCCESS_CODE).send(zone))
 //             .catch(next);
 //         })
 //         .catch(next);
