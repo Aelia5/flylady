@@ -41,7 +41,17 @@ module.exports.validateTask = celebrate({
 });
 
 module.exports.validateId = celebrate({
-  params: Joi.object().keys({
-    id: Joi.string().length(24).hex().required(),
-  }),
+  params: Joi.object()
+    .keys({
+      id: Joi.string().length(24).hex().required(),
+    })
+    .unknown(true),
+});
+
+module.exports.validateZoneNumber = celebrate({
+  params: Joi.object()
+    .keys({
+      number: Joi.number().min(1).max(5),
+    })
+    .unknown(true),
 });

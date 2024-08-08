@@ -11,29 +11,6 @@ const { checkAvailability } = require('../middlewares/check');
 const notFoundMessage = 'Такой комнаты не существует';
 const forbiddenMessage = 'Вы не можете редактировать или удалять чужую комнату';
 
-module.exports.renameZone = (req, res, next) => {
-  Zone.findById(req.params.id)
-    .then((zone) =>
-      checkAvailability(zone, req.user._id, notFoundMessage, forbiddenMessage)
-    )
-    .then((zone) => {
-      Zone.findByIdAndUpdate(
-        zone._id,
-        { name: req.body.name },
-        { new: true, runValidators: true }
-      )
-        .then((zone) => res.status(SUCCESS_CODE).send(zone))
-        .catch(next);
-    })
-    .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') {
-        next(new ValidationError(err.message || validationErrorMessage));
-      } else {
-        next(err);
-      }
-    });
-};
-
 module.exports.createTask = (req, res, next) => {
   const { name, frequency } = req.body;
   Zone.findById(req.params.id)

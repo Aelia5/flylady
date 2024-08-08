@@ -86,3 +86,31 @@ module.exports.renameHouse = (req, res, next) => {
       }
     });
 };
+
+module.exports.renameZone = (req, res, next) => {
+  House.findById(req.params.id)
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
+    .then((house) => {
+      house.zones[req.params.number - 1].name = req.body.name;
+      return house;
+    })
+    .then((house) => {
+      console.log(house);
+      House.findByIdAndUpdate(
+        house._id,
+        { zones: house.zones },
+        { new: true, runValidators: true }
+      )
+        .then((house) => res.status(SUCCESS_CODE).send(house))
+        .catch(next);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        next(new ValidationError(err.message || validationErrorMessage));
+      } else {
+        next(err);
+      }
+    });
+};
