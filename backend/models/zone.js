@@ -1,17 +1,6 @@
 const mongoose = require('mongoose');
 
 const zoneSchema = new mongoose.Schema({
-  number: {
-    type: Number,
-    required: true,
-    unique: true,
-    validate: {
-      validator(v) {
-        return v <= 5;
-      },
-      message: 'Зон не может быть больше пяти',
-    },
-  },
   name: {
     type: String,
     required: true,

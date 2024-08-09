@@ -3,6 +3,7 @@ const {
   validatePlace,
   validateId,
   validateZoneNumber,
+  validateZoneOrder,
 } = require('../middlewares/validate');
 
 const {
@@ -11,6 +12,7 @@ const {
   deleteHouse,
   renameHouse,
   renameZone,
+  reorderZones,
 } = require('../controllers/houses');
 
 router.post('/new-house', validatePlace, createHouse);
@@ -21,8 +23,10 @@ router.delete('/:id', validateId, deleteHouse);
 
 router.patch('/:id', validateId, validatePlace, renameHouse);
 
+router.patch('/:id/reorder', validateId, validateZoneOrder, reorderZones);
+
 router.patch(
-  '/:id/:number',
+  '/:id/:zone',
   validateId,
   validateZoneNumber,
   validatePlace,

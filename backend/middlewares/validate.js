@@ -51,7 +51,13 @@ module.exports.validateId = celebrate({
 module.exports.validateZoneNumber = celebrate({
   params: Joi.object()
     .keys({
-      number: Joi.number().min(1).max(5),
+      zone: Joi.number().min(1).max(5),
     })
     .unknown(true),
+});
+
+module.exports.validateZoneOrder = celebrate({
+  body: Joi.object().keys({
+    newOrder: Joi.array().items(Joi.number().min(1).max(5)).length(5).unique(),
+  }),
 });
