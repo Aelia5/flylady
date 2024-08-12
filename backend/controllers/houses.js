@@ -1,6 +1,7 @@
 const House = require('../models/house');
 
 const ValidationError = require('../errors/validation-err');
+const NotFoundError = require('../errors/not-found-err');
 
 const { validationErrorMessage } = require('../utils/constants');
 
@@ -94,11 +95,10 @@ module.exports.renameZone = (req, res, next) => {
       checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
     )
     .then((house) => {
-      house.zones[req.params.zone - 1].name = req.body.name;
+      house.zones[req.params.zone].name = req.body.name;
       return house;
     })
     .then((house) => {
-      console.log(house);
       House.findByIdAndUpdate(
         house._id,
         { zones: house.zones },
@@ -151,29 +151,118 @@ module.exports.reorderZones = (req, res, next) => {
     });
 };
 
-// module.exports.createTask = (req, res, next) => {
-//   House.findById(req.params.id)
-//     .then((zone) =>
-//       checkAvailability(zone, req.user._id, notFoundMessage, forbiddenMessage)
-//     )
-//     .then((zone) =>
-//       Task.create({ name, frequency, owner: zone.owner }).then((task) => {
-//         Zone.findByIdAndUpdate(
-//           zone._id,
-//           { $push: { tasks: task } },
-//           { new: true, runValidators: true }
-//         )
-//           .populate('owner')
-//           .populate('tasks')
-//           .then((zone) => res.status(SUCCESS_CODE).send(zone))
-//           .catch(next);
-//       })
-//     )
-//     .catch((err) => {
-//       if (err.name === 'CastError' || err.name === 'ValidationError') {
-//         next(new ValidationError(err.message || validationErrorMessage));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
+module.exports.addTask = (req, res, next) => {
+  House.findById(req.params.id)
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
+    .then((house) => {
+      house.zones[req.params.zone].tasks.unshift(req.body.name);
+      return house;
+    })
+    .then((house) =>
+      House.findByIdAndUpdate(
+        house._id,
+        { zones: house.zones },
+        { new: true, runValidators: true }
+      )
+    )
+    .then((house) => res.status(SUCCESS_CODE).send(house))
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        next(new ValidationError(err.message || validationErrorMessage));
+      } else {
+        next(err);
+      }
+    });
+};
+
+module.exports.deleteTask = (req, res, next) => {
+  House.findById(req.params.id)
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
+    .then((house) => {
+      if (req.params.task >= house.zones[req.params.zone].tasks.length) {
+        throw new NotFoundError('Такая задача не найдена');
+      }
+      house.zones[req.params.zone].tasks = house.zones[
+        req.params.zone
+      ].tasks.filter((task, index) => {
+        return index != req.params.task;
+      });
+      return house;
+    })
+    .then((house) =>
+      House.findByIdAndUpdate(
+        house._id,
+        { zones: house.zones },
+        { new: true, runValidators: true }
+      )
+    )
+    .then((house) => res.status(SUCCESS_CODE).send(house))
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        next(new ValidationError(err.message || validationErrorMessage));
+      } else {
+        next(err);
+      }
+    });
+};
+
+module.exports.renameTask = (req, res, next) => {
+  House.findById(req.params.id)
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
+    .then((house) => {
+      if (req.params.task >= house.zones[req.params.zone].tasks.length) {
+        throw new NotFoundError('Такая задача не найдена');
+      }
+      house.zones[req.params.zone].tasks[req.params.task] = req.body.name;
+      return house;
+    })
+    .then((house) =>
+      House.findByIdAndUpdate(
+        house._id,
+        { zones: house.zones },
+        { new: true, runValidators: true }
+      )
+    )
+    .then((house) => res.status(SUCCESS_CODE).send(house))
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        next(new ValidationError(err.message || validationErrorMessage));
+      } else {
+        next(err);
+      }
+    });
+};
+
+module.exports.completeTask = (req, res, next) => {
+  House.findById(req.params.id)
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
+    .then((house) => {
+      const completedTask = house.zones[req.params.zone].tasks[0];
+      house.zones[req.params.zone].tasks.shift();
+      house.zones[req.params.zone].tasks.push(completedTask);
+      return house;
+    })
+    .then((house) =>
+      House.findByIdAndUpdate(
+        house._id,
+        { zones: house.zones },
+        { new: true, runValidators: true }
+      )
+    )
+    .then((house) => res.status(SUCCESS_CODE).send(house))
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        next(new ValidationError(err.message || validationErrorMessage));
+      } else {
+        next(err);
+      }
+    });
+};
