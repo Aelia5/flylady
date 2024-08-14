@@ -151,7 +151,7 @@
         z-index: 2;
     }
     .header__menu_opened {
-        display: block;
+        display: flex;
       }
 
     .header__nav {
