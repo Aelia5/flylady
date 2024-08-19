@@ -1,0 +1,20 @@
+.login {
+  width: 100%;
+  background-color: #bc986a;
+  margin: 0;
+  padding: 20px calc((100vw - 1140px) / 2);
+  min-height: calc(100vh - 150px);
+  background-color: #659dbd;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__container {
+      display: flex;
+      flex-direction: column;
+      width: 400px;
+      align-items: center;
+      justify-items: flex-start;
+}

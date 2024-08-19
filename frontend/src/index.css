@@ -1,11 +1,12 @@
 @import url(./vendor/normalize.css);
 @import url(./vendor/fonts.css);
-/* @import url(./blocks/api-error.css);
 @import url(./blocks/form-title.css);
 @import url(./blocks/form.css);
-@import url(./blocks/logo.css);
+@import url(./blocks/submit-button.css);
+@import url(./blocks/api-error.css);
+/* @import url(./blocks/logo.css);
 @import url(./blocks/not-found.css);
 @import url(./blocks/option.css);
-@import url(./blocks/submit-button.css);
+
 @import url(./blocks/section-title.css);
 @import url(./blocks/section.css); */

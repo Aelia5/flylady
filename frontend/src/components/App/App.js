@@ -3,13 +3,16 @@ import React from "react";
 import {
   Routes,
   Route,
-  // Navigate,
+  Navigate,
   // useNavigate,
   // useLocation,
 } from "react-router-dom";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
+import Register from "../Register/Register";
+import Login from "../Login/Login";
+import Profile from "../Profile/Profile";
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(
@@ -28,6 +31,54 @@ function App() {
               <Main />
               <Footer />
             </>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            loggedIn ? (
+              <>
+                <Navigate to="/profile" replace />
+              </>
+            ) : (
+              <>
+                <Header loggedIn={loggedIn} />
+                <Register />
+                <Footer />
+              </>
+            )
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            loggedIn ? (
+              <>
+                <Navigate to="/profile" replace />
+              </>
+            ) : (
+              <>
+                <Header loggedIn={loggedIn} />
+                <Login />
+                <Footer />
+              </>
+            )
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            loggedIn ? (
+              <>
+                <Header loggedIn={loggedIn} />
+                <Profile />
+                <Footer />
+              </>
+            ) : (
+              <>
+                <Navigate to="/signin" replace />
+              </>
+            )
           }
         />
       </Routes>
