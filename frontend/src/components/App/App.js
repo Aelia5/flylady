@@ -13,6 +13,7 @@ import Footer from "../Footer/Footer";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
+import Houses from "../Houses/Houses";
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(
@@ -72,6 +73,22 @@ function App() {
               <>
                 <Header loggedIn={loggedIn} />
                 <Profile />
+                <Footer />
+              </>
+            ) : (
+              <>
+                <Navigate to="/signin" replace />
+              </>
+            )
+          }
+        />
+        <Route
+          path="/houses"
+          element={
+            loggedIn ? (
+              <>
+                <Header loggedIn={loggedIn} />
+                <Houses />
                 <Footer />
               </>
             ) : (

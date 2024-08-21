@@ -34,7 +34,10 @@ function Header({ loggedIn }) {
         {loggedIn ? (
           <nav>
             <ul className="header__nav">
-              <li className="header__item">
+              <li
+                className="header__item"
+                onClick={menuOpened ? closeBurgerMenu : ""}
+              >
                 <NavLink
                   to="/houses"
                   className={({ isActive }) =>
@@ -44,7 +47,10 @@ function Header({ loggedIn }) {
                   Мои дома
                 </NavLink>
               </li>
-              <li className="header__item">
+              <li
+                className="header__item"
+                onClick={menuOpened ? closeBurgerMenu : ""}
+              >
                 <NavLink
                   to="/tasks"
                   className={({ isActive }) =>
@@ -61,7 +67,10 @@ function Header({ loggedIn }) {
         )}
         <div>
           <ul className="header__nav">
-            <li className="header__item">
+            <li
+              className="header__item"
+              onClick={menuOpened ? closeBurgerMenu : ""}
+            >
               {loggedIn ? (
                 <NavLink
                   to="/profile"
@@ -82,7 +91,10 @@ function Header({ loggedIn }) {
                 </NavLink>
               )}
             </li>
-            <li className="header__item">
+            <li
+              className="header__item"
+              onClick={menuOpened ? closeBurgerMenu : ""}
+            >
               {loggedIn ? (
                 <Link to="/exit" className="header__link">
                   Выход

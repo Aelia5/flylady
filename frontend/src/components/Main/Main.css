@@ -7,7 +7,7 @@
     margin: 0;
     padding: 0 calc((100vw - 1140px) / 2);
     width: 100%;
-    min-height: calc(100vh - 150px);
+    min-height: calc(100dvh - 150px);
     background-color: #659dbd;
     box-sizing: border-box;
 }
@@ -44,7 +44,7 @@
 
 .main__image {
     display: block;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100dvh - 150px);
     max-width: 100%;
     grid-row: span 2;
     aspect-ratio: 148 / 135;

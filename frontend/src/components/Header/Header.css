@@ -41,7 +41,7 @@
 
 .header__overlay {
     width: calc(100vw - 220px);
-    height: 100vh;
+    height: 100dvh;
     position: absolute;
     top: 74px;
     left: 0px;
@@ -140,7 +140,7 @@
         position: absolute;
         top: 74px;
         right: 0px;
-        height: 100vh;
+        height: 100dvh;
         flex-direction: column;
         justify-content: flex-start;
         width: 220px;

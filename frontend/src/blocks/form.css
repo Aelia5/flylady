@@ -45,6 +45,10 @@
  min-height:12px;
 }
 
+.form_hidden {
+  display: none;
+}
+
 @media screen and (max-width: 426px) {
   .form {
     width: 260px;
