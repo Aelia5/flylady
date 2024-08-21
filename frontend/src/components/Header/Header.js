@@ -34,28 +34,24 @@ function Header({ loggedIn }) {
         {loggedIn ? (
           <nav>
             <ul className="header__nav">
-              <li
-                className="header__item"
-                onClick={menuOpened ? closeBurgerMenu : ""}
-              >
+              <li className="header__item">
                 <NavLink
                   to="/houses"
                   className={({ isActive }) =>
                     `header__link ${isActive ? "header__link_active" : ""}`
                   }
+                  onClick={menuOpened ? closeBurgerMenu : ""}
                 >
                   Мои дома
                 </NavLink>
               </li>
-              <li
-                className="header__item"
-                onClick={menuOpened ? closeBurgerMenu : ""}
-              >
+              <li className="header__item">
                 <NavLink
                   to="/tasks"
                   className={({ isActive }) =>
                     `header__link ${isActive ? "header__link_active" : ""}`
                   }
+                  onClick={menuOpened ? closeBurgerMenu : ""}
                 >
                   Задачи на сегодня
                 </NavLink>
@@ -67,16 +63,14 @@ function Header({ loggedIn }) {
         )}
         <div>
           <ul className="header__nav">
-            <li
-              className="header__item"
-              onClick={menuOpened ? closeBurgerMenu : ""}
-            >
+            <li className="header__item">
               {loggedIn ? (
                 <NavLink
                   to="/profile"
                   className={({ isActive }) =>
                     `header__link ${isActive ? "header__link_active" : ""}`
                   }
+                  onClick={menuOpened ? closeBurgerMenu : ""}
                 >
                   Профиль
                 </NavLink>
@@ -86,17 +80,19 @@ function Header({ loggedIn }) {
                   className={({ isActive }) =>
                     `header__link ${isActive ? "header__link_active" : ""}`
                   }
+                  onClick={menuOpened ? closeBurgerMenu : ""}
                 >
                   Зарегистрироваться
                 </NavLink>
               )}
             </li>
-            <li
-              className="header__item"
-              onClick={menuOpened ? closeBurgerMenu : ""}
-            >
+            <li className="header__item">
               {loggedIn ? (
-                <Link to="/exit" className="header__link">
+                <Link
+                  to="/exit"
+                  className="header__link"
+                  onClick={menuOpened ? closeBurgerMenu : ""}
+                >
                   Выход
                 </Link>
               ) : (
@@ -105,6 +101,7 @@ function Header({ loggedIn }) {
                   className={({ isActive }) =>
                     `header__link ${isActive ? "header__link_active" : ""}`
                   }
+                  onClick={menuOpened ? closeBurgerMenu : ""}
                 >
                   Войти
                 </NavLink>

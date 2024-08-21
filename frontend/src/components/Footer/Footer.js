@@ -1,6 +1,6 @@
 import "./Footer.css";
 
-function Footer(fixed) {
+function Footer() {
   return (
     <footer className="footer">
       <li className="footer__list">
