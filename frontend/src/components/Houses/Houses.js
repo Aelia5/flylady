@@ -1,8 +1,10 @@
 import "./Houses.css";
 import React from "react";
+import House from "../House/House";
+import defaultHouses from "../../utils/constants";
 
 function Houses() {
-  const [houses, setHouses] = React.useState([]);
+  const [houses, setHouses] = React.useState(defaultHouses);
 
   const [formOpened, setFormOpened] = React.useState(false);
   function openForm() {
@@ -25,7 +27,14 @@ function Houses() {
       {houses.length === 0 ? (
         <h1 className="houses__title">У вас пока нет ни одного дома</h1>
       ) : (
-        <div />
+        <>
+          <h1 className="houses__title">Мои дома</h1>
+          <ul className="houses__list">
+            {houses.map((house) => (
+              <House house={house} key={house._id} />
+            ))}
+          </ul>
+        </>
       )}
       <form className={`form ${formOpened ? "" : "form_hidden"}`} noValidate>
         <label htmlFor="house" className="form__label">

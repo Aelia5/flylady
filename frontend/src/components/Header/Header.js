@@ -14,8 +14,6 @@ function Header({ loggedIn }) {
     setMenuOpened(false);
   }
 
-  console.log(menuOpened);
-
   return (
     <header className="header">
       <button
@@ -26,7 +24,7 @@ function Header({ loggedIn }) {
       />
       <div
         className={menuOpened ? "header__overlay" : ""}
-        onClick={menuOpened ? closeBurgerMenu : ""}
+        onClick={menuOpened ? closeBurgerMenu : undefined}
       ></div>
       <div
         className={`header__menu ${menuOpened ? "header__menu_opened" : ""}`}
@@ -40,7 +38,7 @@ function Header({ loggedIn }) {
                   className={({ isActive }) =>
                     `header__link ${isActive ? "header__link_active" : ""}`
                   }
-                  onClick={menuOpened ? closeBurgerMenu : ""}
+                  onClick={menuOpened ? closeBurgerMenu : undefined}
                 >
                   Мои дома
                 </NavLink>
@@ -49,7 +47,9 @@ function Header({ loggedIn }) {
                 <NavLink
                   to="/tasks"
                   className={({ isActive }) =>
-                    `header__link ${isActive ? "header__link_active" : ""}`
+                    `header__link ${
+                      isActive ? "header__link_active" : undefined
+                    }`
                   }
                   onClick={menuOpened ? closeBurgerMenu : ""}
                 >
@@ -68,7 +68,9 @@ function Header({ loggedIn }) {
                 <NavLink
                   to="/profile"
                   className={({ isActive }) =>
-                    `header__link ${isActive ? "header__link_active" : ""}`
+                    `header__link ${
+                      isActive ? "header__link_active" : undefined
+                    }`
                   }
                   onClick={menuOpened ? closeBurgerMenu : ""}
                 >
@@ -78,7 +80,9 @@ function Header({ loggedIn }) {
                 <NavLink
                   to="/signup"
                   className={({ isActive }) =>
-                    `header__link ${isActive ? "header__link_active" : ""}`
+                    `header__link ${
+                      isActive ? "header__link_active" : undefined
+                    }`
                   }
                   onClick={menuOpened ? closeBurgerMenu : ""}
                 >
@@ -91,7 +95,7 @@ function Header({ loggedIn }) {
                 <Link
                   to="/exit"
                   className="header__link"
-                  onClick={menuOpened ? closeBurgerMenu : ""}
+                  onClick={menuOpened ? closeBurgerMenu : undefined}
                 >
                   Выход
                 </Link>
@@ -101,7 +105,7 @@ function Header({ loggedIn }) {
                   className={({ isActive }) =>
                     `header__link ${isActive ? "header__link_active" : ""}`
                   }
-                  onClick={menuOpened ? closeBurgerMenu : ""}
+                  onClick={menuOpened ? closeBurgerMenu : undefined}
                 >
                   Войти
                 </NavLink>

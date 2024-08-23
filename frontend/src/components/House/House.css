@@ -1,0 +1,47 @@
+.house {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    padding-bottom: 10px;
+
+}
+
+.house__name-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #fbeec1;
+    margin-bottom: 32px;
+    }
+
+.house__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px
+}
+
+.house__name {
+    margin: 0;
+    padding: 0;
+    color: #fbeec1;
+    font-size: 20px;
+    font-weight: 500;
+    padding-bottom: 10px;
+}
+
+.house__form {
+    margin-bottom: 0px;
+}
+
+.house__input {
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.house__input:focus {
+    outline: none;
+}

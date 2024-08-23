@@ -1,0 +1,41 @@
+.little-button {
+    width: 20px;
+      height: 20px;
+      background-color: transparent;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      cursor: pointer;
+    border: none;
+    }
+    
+    .little-button:hover {
+      opacity: 0.8;
+    }
+    
+    .little-button_hidden {
+      display: none;
+    
+    }
+
+    .little-button_type_delete {
+        background-image: url(../images/delete-button.svg);
+    }
+
+    .little-button_type_edit {
+        background-image: url(../images/edit-button.svg);
+    }
+
+    .little-button_type_reorder {
+        background-image: url(../images/reorder-button.svg);
+        transform: rotate(90deg);
+
+    }
+
+    .little-button_type_save {
+        background-image: url(../images/save-button.svg);
+    }
+
+    .little-button_type_discard {
+        background-image: url(../images/discard-button.svg);
+    }

@@ -43,16 +43,11 @@
       }
     }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 768px) {
     .footer {
         padding-left: 30px;
         padding-right: 30px;
     }
-    /* .footer_fixed {
-      position: fixed;
-      bottom: 75px;
-      left: 0;
-    } */
 }
 
 @media screen and (max-width: 600px) {

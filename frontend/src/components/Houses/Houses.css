@@ -21,6 +21,17 @@
     text-align: center;
   }
 
+  .houses__list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    list-style-type: none;
+    margin: 0 0 20px;
+    padding: 0;
+
+  }
+
   .houses__comment {
     color: #fbeec1;
     margin: 40px 0;
