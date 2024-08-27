@@ -1,0 +1,8 @@
+.zone {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    margin: 0;
+    padding: 0 0 10px;
+}

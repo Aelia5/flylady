@@ -1,0 +1,98 @@
+.item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #fbeec1;
+    margin-bottom: 22px;
+    gap: 10px
+    }
+
+.item_type_form {
+    margin-bottom: 0;
+}
+
+.item__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px
+}
+
+.item__name {
+    margin: 0;
+    padding: 0;
+    color: #fbeec1;
+    font-size: 20px;
+    font-weight: 500;
+    padding-bottom: 10px;
+}
+
+.item__name_type_zone {
+    font-weight: 300;
+    font-size: 18px;
+}
+
+.item__form {
+    margin-bottom: 0px;
+}
+
+.item__input {
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.item__input:focus {
+    outline: none;
+}
+
+.item__input-error {
+    padding-bottom: 0;
+}
+
+.item__button {
+    width: 20px;
+      height: 20px;
+      background-color: transparent;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      cursor: pointer;
+    border: none;
+    }
+    
+    .item__button:hover {
+      opacity: 0.8;
+    }
+    
+    .item__button_hidden {
+      display: none;
+    
+    }
+
+    .item__button_type_delete {
+        background-image: url(../images/delete-button.svg);
+    }
+
+    .item__button_type_edit {
+        background-image: url(../images/edit-button.svg);
+    }
+
+    .item__button_type_reorder {
+        background-image: url(../images/reorder-button.svg);
+        transform: rotate(90deg);
+
+    }
+
+    .item__button_type_save {
+        background-image: url(../images/save-button.svg);
+    }
+
+    .item__button_type_discard {
+        background-image: url(../images/discard-button.svg);
+    }
+
+    .item__button_type_open {
+        background-image: url(../images/open-button.svg);
+    }
