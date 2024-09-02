@@ -1,20 +1,37 @@
 import "./Zone.css";
 import React from "react";
+import Task from "../Task/Task";
 
 function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
   const [nameEdited, setNameEdited] = React.useState(false);
-
   function openNameForm() {
     setNameEdited(true);
     passNameEdited(true);
   }
-
   function closeNameForm() {
     setNameEdited(false);
     passNameEdited(false);
   }
 
-  const zoneNumbers = [1, 2, 3, 4, 5];
+  const [tasksOpened, setTasksOpened] = React.useState(false);
+  function openTasks() {
+    setTasksOpened(true);
+  }
+  function closeTasks() {
+    setTasksOpened(false);
+  }
+
+  const [width, setWidth] = React.useState(window.innerWidth);
+  React.useEffect(() => {
+    function handleResizeWindow() {
+      setTimeout(setWidth, 500, window.innerWidth);
+    }
+    window.addEventListener("resize", handleResizeWindow);
+    return () => {
+      window.removeEventListener("resize", handleResizeWindow);
+    };
+  }, []);
+
   return (
     <li className="zone">
       {orderEdited ? (
@@ -22,7 +39,10 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
         <div className="item item_type_reorder">
           <h2 className="item__name item__name_type_zone">{zone.name}</h2>
           <div className="item__buttons">
-            <p className="item__name item__name_type_zone">Неделя</p>
+            {width > 425 && (
+              <p className="item__name item__name_type_zone">Неделя</p>
+            )}
+
             <select
               name={zoneNumber}
               form={formName}
@@ -75,22 +95,48 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
             </>
           ) : (
             // Если не редактируется имя
-            <div className="item">
-              <h2 className="item__name item__name_type_zone">
-                Неделя {zoneNumber}. {zone.name}
-              </h2>
-              <div className="item__buttons">
-                <button
-                  className="item__button item__button_type_open"
-                  title="Показать задачи"
-                ></button>
-                <button
-                  className="item__button item__button_type_edit"
-                  title="Редактировать название"
-                  onClick={openNameForm}
-                ></button>
+            <>
+              <div className="item">
+                <h2 className="item__name item__name_type_zone">
+                  Неделя {zoneNumber}. {zone.name}
+                </h2>
+                <div className="item__buttons">
+                  {tasksOpened ? (
+                    <>
+                      <button
+                        className="item__button item__button_type_add"
+                        title="Добавить задачу"
+                        onClick=""
+                      ></button>
+                      <button
+                        className="item__button item__button_type_collapse"
+                        title="Скрыть задачи"
+                        onClick={closeTasks}
+                      ></button>
+                    </>
+                  ) : (
+                    <button
+                      className="item__button item__button_type_open"
+                      title="Показать задачи"
+                      onClick={openTasks}
+                    ></button>
+                  )}
+
+                  <button
+                    className="item__button item__button_type_edit"
+                    title="Редактировать название"
+                    onClick={openNameForm}
+                  ></button>
+                </div>
               </div>
-            </div>
+              {tasksOpened && (
+                <ul className="zone__tasks">
+                  {zone.tasks.map((task) => (
+                    <Task task={task} key="" />
+                  ))}
+                </ul>
+              )}
+            </>
           )}
         </>
       )}

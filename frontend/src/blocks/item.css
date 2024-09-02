@@ -39,6 +39,10 @@
     font-weight: 300;
     font-size: 18px;
 }
+.item__name_type_task {
+    font-weight: 200;
+    font-size: 16px;
+}
 
 .item__form {
     margin-bottom: 0px;
@@ -111,7 +115,18 @@
     }
 
     .item__button_type_open {
-        background-image: url(../images/open-button.svg);
+        background-image: url(../images/collapse-button.svg);
+        transform: rotate(180deg);
+    }
+
+    .item__button_type_collapse {
+        background-image: url(../images/collapse-button.svg);
+        
+    }
+
+    .item__button_type_add {
+        background-image: url(../images/add-button.svg);
+        
     }
 
     .item__select {

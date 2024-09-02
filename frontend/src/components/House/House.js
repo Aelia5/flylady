@@ -5,21 +5,17 @@ import Zone from "../Zone/Zone";
 
 function House({ house }) {
   const [nameEdited, setNameEdited] = React.useState(false);
-
   function openNameForm() {
     setNameEdited(true);
   }
-
   function closeNameForm() {
     setNameEdited(false);
   }
 
   const [zonesOrderEdited, setZonesOrderEdited] = React.useState(false);
-
   function openZonesReorder() {
     setZonesOrderEdited(true);
   }
-
   function closeZonesReorder() {
     setZonesOrderEdited(false);
   }
