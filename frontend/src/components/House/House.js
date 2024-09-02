@@ -24,9 +24,12 @@ function House({ house }) {
     setZonesOrderEdited(false);
   }
 
+  const [zoneNameEdited, setZoneNameEdited] = React.useState(false);
+
   return (
     <li className="house">
       {nameEdited ? (
+        // Если имя редактируется
         <>
           <form className="item item_type_form">
             <input
@@ -61,10 +64,12 @@ function House({ house }) {
           </p>
         </>
       ) : (
-        <div className="item">
+        // Если имя не редактируется
+        <div className={`item ${zonesOrderEdited ? "item_type_reorder" : ""}`}>
           <h2 className="item__name">{house.name}</h2>
           <div className="item__buttons">
             {zonesOrderEdited ? (
+              // Если редактируется порядок зон
               <>
                 <button
                   className="item__button item__button_type_save"
@@ -77,6 +82,7 @@ function House({ house }) {
                 ></button>
               </>
             ) : (
+              // Если ничего не редактируется
               <>
                 {" "}
                 <button
@@ -88,6 +94,7 @@ function House({ house }) {
                   className="item__button item__button_type_reorder"
                   title="Изменить порядок зон"
                   onClick={openZonesReorder}
+                  disabled={zoneNameEdited}
                 ></button>
                 <button
                   className="item__button item__button_type_delete"
@@ -99,89 +106,20 @@ function House({ house }) {
         </div>
       )}
       {zonesOrderEdited ? (
-        <form className="house__zones">
-          <div className="item">
-            <h2 className="item__name item__name_type_zone">
-              {house.zones[0].name}
-            </h2>
-            <div className="item__buttons">
-              <select name="numberOne">
-                <option value="1" selected>
-                  1
-                </option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-          </div>
-          <div className="item">
-            <h2 className="item__name item__name_type_zone">
-              {house.zones[1].name}
-            </h2>
-            <div className="item__buttons">
-              <select name="numberOne">
-                <option value="1">1</option>
-                <option value="2" selected>
-                  2
-                </option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-          </div>
-          <div className="item">
-            <h2 className="item__name item__name_type_zone">
-              {house.zones[2].name}
-            </h2>
-            <div className="item__buttons">
-              <select name="numberOne">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3" selected>
-                  3
-                </option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-          </div>
-          <div className="item">
-            <h2 className="item__name item__name_type_zone">
-              {house.zones[3].name}
-            </h2>
-            <div className="item__buttons">
-              <select name="numberOne">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4" selected>
-                  4
-                </option>
-                <option value="5">5</option>
-              </select>
-            </div>
-          </div>
-          <div className="item">
-            <h2 className="item__name item__name_type_zone">
-              {house.zones[4].name}
-            </h2>
-            <div className="item__buttons">
-              <select name="numberOne">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5" selected>
-                  5
-                </option>
-              </select>
-            </div>
-          </div>
+        // Если редактируется порядок зон
+        <form className="house__zones house__zones_type_reorder" id={house._id}>
+          {house.zones.map((zone, index) => (
+            <Zone
+              zone={zone}
+              key={zone._id}
+              zoneNumber={index + 1}
+              orderEdited={zonesOrderEdited}
+              formName={house._id}
+            />
+          ))}
         </form>
       ) : (
+        // Если ничего не редактируется
         <ul className="house__zones">
           {house.zones.map((zone, index) => (
             <Zone
@@ -189,6 +127,8 @@ function House({ house }) {
               key={zone._id}
               zoneNumber={index + 1}
               orderEdited={zonesOrderEdited}
+              formName=""
+              passNameEdited={setZoneNameEdited}
             />
           ))}
         </ul>
@@ -198,7 +138,3 @@ function House({ house }) {
 }
 
 export default House;
-
-// Стилизовать форму, чтобы высота и шрифт не отличались.
-// Заблокировать кнопки редактирования, чтобы не открывались одновременно
-// Стилизовать выпадающий список

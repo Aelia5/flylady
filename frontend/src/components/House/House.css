@@ -13,6 +13,11 @@
     padding: 0;
 }
 
+.house__zones_type_reorder {
+margin-bottom: 28px;
+}
+
+
 @media screen and (max-width: 426px) {
     .house__zones {
         margin-left: 0;

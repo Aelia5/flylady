@@ -2,19 +2,27 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: end;
     border-bottom: 1px solid #fbeec1;
     margin-bottom: 22px;
-    gap: 10px
+    gap: 10px;
+    padding-bottom: 10px;
     }
 
 .item_type_form {
     margin-bottom: 0;
 }
 
+.item_type_reorder {
+    margin-bottom: 16px;
+}
+
+
 .item__buttons {
     display: flex;
     flex-direction: row;
-    gap: 20px
+    align-items: end;
+    gap: 20px;
 }
 
 .item__name {
@@ -23,7 +31,8 @@
     color: #fbeec1;
     font-size: 20px;
     font-weight: 500;
-    padding-bottom: 10px;
+    line-height: 22px;
+
 }
 
 .item__name_type_zone {
@@ -38,7 +47,6 @@
 .item__input {
     background-color: transparent;
     border: none;
-    padding: 5px;
     border-radius: 8px;
     width: 400px;
 }
@@ -61,10 +69,16 @@
       cursor: pointer;
     border: none;
     }
-    
     .item__button:hover {
-      opacity: 0.8;
-    }
+        opacity: 0.8;
+      }
+.item__button:disabled {
+        cursor: default;
+}
+.item__button:disabled.item__button:hover {
+    opacity: 1;
+}
+
     
     .item__button_hidden {
       display: none;
@@ -84,6 +98,9 @@
         transform: rotate(90deg);
 
     }
+    .item__button_type_reorder:disabled {
+        background-image: url(../images/reorder-button-disabled.svg);
+            }
 
     .item__button_type_save {
         background-image: url(../images/save-button.svg);
@@ -95,4 +112,13 @@
 
     .item__button_type_open {
         background-image: url(../images/open-button.svg);
+    }
+
+    .item__select {
+        height: 28px;
+        border: none;
+        border-radius: 4px;
+        background-color: #fbeec1;
+        color: #8d8741;
+
     }
