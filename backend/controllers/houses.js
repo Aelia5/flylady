@@ -157,7 +157,7 @@ module.exports.addTask = (req, res, next) => {
       checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
     )
     .then((house) => {
-      house.zones[req.params.zone].tasks.unshift(req.body.name);
+      house.zones[req.params.zone].tasks.unshift({ name: req.body.name });
       return house;
     })
     .then((house) =>
@@ -219,7 +219,7 @@ module.exports.renameTask = (req, res, next) => {
       if (req.params.task >= house.zones[req.params.zone].tasks.length) {
         throw new NotFoundError('Такая задача не найдена');
       }
-      house.zones[req.params.zone].tasks[req.params.task] = req.body.name;
+      house.zones[req.params.zone].tasks[req.params.task].name = req.body.name;
       return house;
     })
     .then((house) =>
