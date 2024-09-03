@@ -9,9 +9,16 @@
     padding-bottom: 10px;
     }
 
+.item_type_task {
+    padding-bottom: 5px;
+     margin-bottom: 17px;
+    }
+
 .item_type_form {
     margin-bottom: 0;
 }
+
+
 
 .item_type_reorder {
     margin-bottom: 16px;
@@ -61,6 +68,7 @@
 
 .item__input-error {
     padding-bottom: 0;
+    font-size: 10px;
 }
 
 .item__button {

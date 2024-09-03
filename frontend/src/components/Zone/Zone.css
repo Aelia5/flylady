@@ -4,6 +4,7 @@
     width: 100%;
     margin: 0;
     padding: 0 0 10px;
+    gap: 10px;
 }
 
 .zone__tasks {

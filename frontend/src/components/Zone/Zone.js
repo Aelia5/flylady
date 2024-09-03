@@ -34,6 +34,7 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
 
   return (
     <li className="zone">
+      {/* Название зонв */}
       {orderEdited ? (
         // Если редактируется порядок зон
         <div className="item item_type_reorder">
@@ -106,7 +107,7 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
                       <button
                         className="item__button item__button_type_add"
                         title="Добавить задачу"
-                        onClick=""
+                        // onClick=""
                       ></button>
                       <button
                         className="item__button item__button_type_collapse"
@@ -132,7 +133,7 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
               {tasksOpened && (
                 <ul className="zone__tasks">
                   {zone.tasks.map((task) => (
-                    <Task task={task} key="" />
+                    <Task task={task} key={task._id} />
                   ))}
                 </ul>
               )}
