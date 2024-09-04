@@ -59,7 +59,7 @@
     background-color: transparent;
     border: none;
     border-radius: 8px;
-    width: 400px;
+    width: 100%;
 }
 
 .item__input:focus {

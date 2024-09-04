@@ -124,7 +124,7 @@ function House({ house }) {
               zoneNumber={index + 1}
               orderEdited={zonesOrderEdited}
               formName=""
-              passNameEdited={setZoneNameEdited}
+              passEdited={setZoneNameEdited}
             />
           ))}
         </ul>

@@ -13,6 +13,7 @@ function Task({ task }) {
   return (
     <>
       {nameEdited ? (
+        // Если название редактируется
         <li className="task">
           <form className="item item_type_task item_type_form">
             <input

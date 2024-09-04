@@ -2,15 +2,15 @@ import "./Zone.css";
 import React from "react";
 import Task from "../Task/Task";
 
-function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
+function Zone({ zone, zoneNumber, orderEdited, formName, passEdited }) {
   const [nameEdited, setNameEdited] = React.useState(false);
   function openNameForm() {
     setNameEdited(true);
-    passNameEdited(true);
+    passEdited(true);
   }
   function closeNameForm() {
     setNameEdited(false);
-    passNameEdited(false);
+    passEdited(false);
   }
 
   const [tasksOpened, setTasksOpened] = React.useState(false);
@@ -19,6 +19,14 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
   }
   function closeTasks() {
     setTasksOpened(false);
+  }
+
+  const [addFormOpened, setAddFormOpened] = React.useState(false);
+  function openAddForm() {
+    setAddFormOpened(true);
+  }
+  function closeAddForm() {
+    setAddFormOpened(false);
   }
 
   const [width, setWidth] = React.useState(window.innerWidth);
@@ -107,7 +115,7 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
                       <button
                         className="item__button item__button_type_add"
                         title="Добавить задачу"
-                        // onClick=""
+                        onClick={openAddForm}
                       ></button>
                       <button
                         className="item__button item__button_type_collapse"
@@ -131,11 +139,46 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passNameEdited }) {
                 </div>
               </div>
               {tasksOpened && (
-                <ul className="zone__tasks">
-                  {zone.tasks.map((task) => (
-                    <Task task={task} key={task._id} />
-                  ))}
-                </ul>
+                <>
+                  <ul className="zone__tasks">
+                    {addFormOpened && (
+                      <li className="task">
+                        <form className="item item_type_task item_type_form">
+                          <input
+                            className="item__name item__name_type_task item__input"
+                            type="text"
+                            placeholder="Создайте новую задачу"
+                            id="task"
+                            name="task"
+                            minLength="2"
+                            maxLength="300"
+                            // onChange={handleChange}
+                            // value={values.email || ""}
+                            required
+                            // disabled={blocked}
+                          ></input>
+                          <div className="item__buttons">
+                            <button
+                              className="item__button item__button_type_save"
+                              title="Сохранить"
+                            ></button>
+                            <button
+                              className="item__button item__button_type_discard"
+                              title="Отказаться от изменений"
+                              onClick={closeAddForm}
+                            ></button>
+                          </div>
+                        </form>
+                        <p className="form__input-error item__input-error">
+                          Тестовая ошибка{/* {errors.house} */}
+                        </p>
+                      </li>
+                    )}
+                    {zone.tasks.map((task) => (
+                      <Task task={task} key={task._id} />
+                    ))}
+                  </ul>
+                </>
               )}
             </>
           )}
