@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: end;
+    align-items: start;
     border-bottom: 1px solid #fbeec1;
     margin-bottom: 22px;
     gap: 10px;
@@ -49,6 +49,10 @@
 .item__name_type_task {
     font-weight: 200;
     font-size: 16px;
+}
+
+.item__name_checked {
+    color: #8d8741
 }
 
 .item__form {
@@ -135,6 +139,10 @@
     .item__button_type_add {
         background-image: url(../images/add-button.svg);
         
+    }
+
+    .item__button_type_check {
+        background-image: url(../images/check-button.svg);
     }
 
     .item__select {

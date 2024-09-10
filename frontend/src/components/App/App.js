@@ -14,6 +14,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import Houses from "../Houses/Houses";
+import Today from "../Today/Today";
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(
@@ -89,6 +90,22 @@ function App() {
               <>
                 <Header loggedIn={loggedIn} />
                 <Houses />
+                <Footer />
+              </>
+            ) : (
+              <>
+                <Navigate to="/signin" replace />
+              </>
+            )
+          }
+        />
+        <Route
+          path="/today"
+          element={
+            loggedIn ? (
+              <>
+                <Header loggedIn={loggedIn} />
+                <Today />
                 <Footer />
               </>
             ) : (

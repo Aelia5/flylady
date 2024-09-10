@@ -45,7 +45,7 @@ function Header({ loggedIn }) {
               </li>
               <li className="header__item">
                 <NavLink
-                  to="/tasks"
+                  to="/today"
                   className={({ isActive }) =>
                     `header__link ${
                       isActive ? "header__link_active" : undefined
