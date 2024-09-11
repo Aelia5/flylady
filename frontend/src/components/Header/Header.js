@@ -1,8 +1,8 @@
-import "./Header.css";
-import React from "react";
-import { useNavigate, Link, NavLink } from "react-router-dom";
+import './Header.css';
+import React from 'react';
+import { useNavigate, Link, NavLink } from 'react-router-dom';
 
-function Header({ loggedIn }) {
+function Header({ loggedIn, signOut }) {
   const navigate = useNavigate();
   const [menuOpened, setMenuOpened] = React.useState(false);
 
@@ -14,20 +14,27 @@ function Header({ loggedIn }) {
     setMenuOpened(false);
   }
 
+  function onExit() {
+    if (menuOpened) {
+      closeBurgerMenu();
+    }
+    signOut();
+  }
+
   return (
     <header className="header">
       <button
         className="header__logo"
         onClick={() => {
-          navigate("/", { replace: true });
+          navigate('/', { replace: true });
         }}
       />
       <div
-        className={menuOpened ? "header__overlay" : ""}
+        className={menuOpened ? 'header__overlay' : ''}
         onClick={menuOpened ? closeBurgerMenu : undefined}
       ></div>
       <div
-        className={`header__menu ${menuOpened ? "header__menu_opened" : ""}`}
+        className={`header__menu ${menuOpened ? 'header__menu_opened' : ''}`}
       >
         {loggedIn ? (
           <nav>
@@ -36,7 +43,7 @@ function Header({ loggedIn }) {
                 <NavLink
                   to="/houses"
                   className={({ isActive }) =>
-                    `header__link ${isActive ? "header__link_active" : ""}`
+                    `header__link ${isActive ? 'header__link_active' : ''}`
                   }
                   onClick={menuOpened ? closeBurgerMenu : undefined}
                 >
@@ -48,10 +55,10 @@ function Header({ loggedIn }) {
                   to="/today"
                   className={({ isActive }) =>
                     `header__link ${
-                      isActive ? "header__link_active" : undefined
+                      isActive ? 'header__link_active' : undefined
                     }`
                   }
-                  onClick={menuOpened ? closeBurgerMenu : ""}
+                  onClick={menuOpened ? closeBurgerMenu : ''}
                 >
                   Задачи на сегодня
                 </NavLink>
@@ -69,10 +76,10 @@ function Header({ loggedIn }) {
                   to="/profile"
                   className={({ isActive }) =>
                     `header__link ${
-                      isActive ? "header__link_active" : undefined
+                      isActive ? 'header__link_active' : undefined
                     }`
                   }
-                  onClick={menuOpened ? closeBurgerMenu : ""}
+                  onClick={menuOpened ? closeBurgerMenu : ''}
                 >
                   Профиль
                 </NavLink>
@@ -81,10 +88,10 @@ function Header({ loggedIn }) {
                   to="/signup"
                   className={({ isActive }) =>
                     `header__link ${
-                      isActive ? "header__link_active" : undefined
+                      isActive ? 'header__link_active' : undefined
                     }`
                   }
-                  onClick={menuOpened ? closeBurgerMenu : ""}
+                  onClick={menuOpened ? closeBurgerMenu : ''}
                 >
                   Зарегистрироваться
                 </NavLink>
@@ -92,18 +99,14 @@ function Header({ loggedIn }) {
             </li>
             <li className="header__item">
               {loggedIn ? (
-                <Link
-                  to="/exit"
-                  className="header__link"
-                  onClick={menuOpened ? closeBurgerMenu : undefined}
-                >
+                <button className="header__link" onClick={onExit}>
                   Выход
-                </Link>
+                </button>
               ) : (
                 <NavLink
                   to="/signin"
                   className={({ isActive }) =>
-                    `header__link ${isActive ? "header__link_active" : ""}`
+                    `header__link ${isActive ? 'header__link_active' : ''}`
                   }
                   onClick={menuOpened ? closeBurgerMenu : undefined}
                 >
@@ -117,8 +120,8 @@ function Header({ loggedIn }) {
       <button
         className={`header__button ${
           menuOpened
-            ? "header__button_type_close"
-            : "header__button_type_burger"
+            ? 'header__button_type_close'
+            : 'header__button_type_burger'
         }`}
         onClick={menuOpened ? closeBurgerMenu : openBurgerMenu}
       ></button>

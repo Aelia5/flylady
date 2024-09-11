@@ -1,14 +1,29 @@
-import "./Register.css";
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
+import './Register.css';
+import React from 'react';
+import { useFormWithValidation } from '../Validation/Validation';
 
-function Register() {
+function Register({
+  handleRegistrationSubmit,
+  apiError,
+  changeApiError,
+  blocked,
+}) {
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
+
   function handleSubmit(e) {
     e.preventDefault();
-    // if (isValid) {
-    //   handleRegistrationSubmit(values, resetForm);
-    // }
+    if (isValid) {
+      handleRegistrationSubmit(values, resetForm);
+    }
   }
+
+  React.useEffect(() => {
+    if (apiError) {
+      changeApiError('');
+    }
+  }, [values]);
+
   return (
     <main className="register">
       <section className="register__container">
@@ -26,13 +41,13 @@ function Register() {
             minLength="2"
             maxLength="20"
             pattern="[A-Za-zА-Яа-яЁё\s\-]+$"
-            // onChange={handleChange}
+            onChange={handleChange}
             title="Только кириллица, латиница, дефисы и пробелы"
-            // value={values.name || ""}
+            value={values.name || ''}
             required
-            // disabled={blocked}
+            disabled={blocked}
           ></input>
-          <p className="form__input-error"></p>
+          <p className="form__input-error">{errors.name}</p>
           <label htmlFor="email" className="form__label">
             E-mail
           </label>
@@ -44,12 +59,12 @@ function Register() {
             name="email"
             pattern="[A-Za-z0-9\._%+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,4}$"
             title="Введите корректный email"
-            // onChange={handleChange}
-            // value={values.email || ""}
+            onChange={handleChange}
+            value={values.email || ''}
             required
-            // disabled={blocked}
+            disabled={blocked}
           ></input>
-          <p className="form__input-error"></p>
+          <p className="form__input-error">{errors.email}</p>
           <label htmlFor="password" className="form__label">
             Пароль
           </label>
@@ -60,18 +75,17 @@ function Register() {
             id="password"
             name="password"
             minLength="7"
-            // onChange={handleChange}
-            // value={values.password || ""}
+            onChange={handleChange}
+            value={values.password || ''}
             required
-            // disabled={blocked}
+            disabled={blocked}
           ></input>
-          <p className="form__input-error"></p>
+          <p className="form__input-error">{errors.password}</p>
           <p className="api-error"></p>
           <button
             type="submit"
             className="submit-button"
-
-            // disabled={!isValid || apiError || blocked}
+            disabled={!isValid || apiError || blocked}
           >
             Зарегистрироваться
           </button>
