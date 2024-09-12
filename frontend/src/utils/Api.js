@@ -61,7 +61,31 @@ function Api() {
     });
   }
 
-  return { register, login, getUser };
+  function editProfileData(newData) {
+    return fetch(`${BASE_URL}/users/me`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: newData.name,
+        email: newData.email,
+      }),
+    }).then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      } else if (res.status === 409) {
+        return Promise.reject('Пользователь с таким email уже существует.');
+      } else if (res.status === 401) {
+        return Promise.reject(res.status);
+      } else {
+        return Promise.reject('При обновлении профиля произошла ошибка.');
+      }
+    });
+  }
+
+  return { register, login, getUser, editProfileData };
 }
 
 export default Api;

@@ -81,7 +81,7 @@ function Register({
             disabled={blocked}
           ></input>
           <p className="form__input-error">{errors.password}</p>
-          <p className="api-error"></p>
+          <p className="api-error">{apiError}</p>
           <button
             type="submit"
             className="submit-button"

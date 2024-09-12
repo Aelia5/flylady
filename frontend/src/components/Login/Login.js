@@ -1,26 +1,26 @@
-import "./Login.css";
-import React from "react";
-import { useNavigate } from "react-router-dom";
-// import { useFormWithValidation } from "../Validation/Validation";
+import './Login.css';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useFormWithValidation } from '../Validation/Validation';
 
 function Login({ handleLoginSubmit, apiError, changeApiError, blocked }) {
   const navigate = useNavigate();
 
-  // const { values, handleChange, errors, isValid, resetForm } =
-  //   useFormWithValidation();
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
-    // if (isValid) {
-    //   handleLoginSubmit(values, resetForm);
-    // }
+    if (isValid) {
+      handleLoginSubmit(values, resetForm);
+    }
   }
 
-  // React.useEffect(() => {
-  //   if (apiError) {
-  //     changeApiError("");
-  //   }
-  // }, [values]);
+  React.useEffect(() => {
+    if (apiError) {
+      changeApiError('');
+    }
+  }, [values]);
 
   return (
     <main className="login">
@@ -38,12 +38,12 @@ function Login({ handleLoginSubmit, apiError, changeApiError, blocked }) {
             name="email"
             pattern="[A-Za-z0-9\._%+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,4}$"
             title="Введите корректный email"
-            // onChange={handleChange}
-            // value={values.email || ""}
+            onChange={handleChange}
+            value={values.email || ''}
             required
-            // disabled={blocked}
+            disabled={blocked}
           ></input>
-          <p className="form__input-error">{/* {errors.email} */}</p>
+          <p className="form__input-error">{errors.email}</p>
           <label htmlFor="password" className="form__label">
             Пароль
           </label>
@@ -54,16 +54,16 @@ function Login({ handleLoginSubmit, apiError, changeApiError, blocked }) {
             id="password"
             name="password"
             minLength="7"
-            // onChange={handleChange}
-            // value={values.password || ""}
+            onChange={handleChange}
+            value={values.password || ''}
             required
             disabled={blocked}
           ></input>
-          <p className="form__input-error">{/* {errors.password} */}</p>
-          <p className="api-error login__api-error">{/* {apiError} */}</p>
+          <p className="form__input-error">{errors.password}</p>
+          <p className="api-error login__api-error">{apiError}</p>
           <button
             className="login__submit-button submit-button"
-            // disabled={!isValid || apiError || blocked}
+            disabled={!isValid || apiError || blocked}
           >
             Войти
           </button>

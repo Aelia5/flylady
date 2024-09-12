@@ -39,10 +39,10 @@
   margin: 0;
   padding: 0 0 10px;
   font-weight: 600;
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 10px;
+  line-height: 10px;
   color: #7f3c58;
- min-height:12px;
+  min-height: 20px;
 }
 
 .form_hidden {

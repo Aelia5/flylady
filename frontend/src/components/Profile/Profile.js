@@ -1,23 +1,22 @@
-import "./Profile.css";
-import React from "react";
-// import { useFormWithValidation } from "../Validation/Validation";
-// import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import './Profile.css';
+import React from 'react';
+import { useFormWithValidation } from '../Validation/Validation';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile() {
-  //   {
-  //   onExit,
-  //   apiError,
-  //   changeApiError,
-  //   handleEditProfileSubmit,
-  //   blocked,
-  //   editSuccess,
-  // }
-  // const currentUser = React.useContext(CurrentUserContext);
+function Profile({
+  onExit,
+  apiError,
+  changeApiError,
+  handleEditProfileSubmit,
+  blocked,
+  editSuccess,
+}) {
+  const currentUser = React.useContext(CurrentUserContext);
 
-  // const [isNew, setIsNew] = React.useState(false);
+  const [isNew, setIsNew] = React.useState(false);
 
-  // const { values, handleChange, errors, isValid, resetForm } =
-  //   useFormWithValidation();
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
 
   const [isEdited, setIsEdited] = React.useState(false);
   function openEdit() {
@@ -26,38 +25,37 @@ function Profile() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // if (isValid) {
-    //   handleEditProfileSubmit(values, resetForm, setIsEdited);
-    // }
+    if (isValid) {
+      handleEditProfileSubmit(values, resetForm, setIsEdited);
+    }
   }
 
-  // React.useEffect(() => {
-  //   if (
-  //     values.name !== currentUser.name ||
-  //     values.email !== currentUser.email
-  //   ) {
-  //     setIsNew(true);
-  //   } else setIsNew(false);
-  // }, [values, currentUser]);
+  React.useEffect(() => {
+    if (
+      values.name !== currentUser.name ||
+      values.email !== currentUser.email
+    ) {
+      setIsNew(true);
+    } else setIsNew(false);
+  }, [values, currentUser]);
 
-  // React.useEffect(() => {
-  //    resetForm(currentUser, {}, false);
-  // }, []);
+  React.useEffect(() => {
+    resetForm(currentUser, {}, false);
+  }, []);
 
-  // React.useEffect(() => {
-  //   if (apiError) {
-  //     changeApiError("");
-  //   }
-  // }, [values]);
+  React.useEffect(() => {
+    if (apiError) {
+      changeApiError('');
+    }
+  }, [values]);
 
   return (
     <main className="profile">
       <section className="profile__container">
         <h1 className="form-title">
-          Привет, Ольга!
-          {/* {editSuccess && !isEdited
+          {editSuccess && !isEdited
             ? `Изменения успешно сохранены!`
-            : `Привет, ${currentUser.name}!`} */}
+            : `Привет, ${currentUser.name}!`}
         </h1>
         {isEdited ? (
           <form className="form" onSubmit={handleSubmit} noValidate>
@@ -69,18 +67,18 @@ function Profile() {
                 placeholder="Введите ваше имя"
                 id="name"
                 name="name"
-                // value={values.name}
+                value={values.name}
                 minLength="2"
                 maxLength="20"
                 pattern="[A-Za-zА-Яа-яЁё\s\-]+$"
                 title="Только кириллица, латиница, дефисы и пробелы"
-                // onChange={handleChange}
+                onChange={handleChange}
                 required
-                // disabled={blocked}
+                disabled={blocked}
               ></input>
             </label>
             <p className="form__input-error profile__input-error">
-              {/* {errors.name} */}
+              {isNew ? errors.name : 'Введите новое имя'}
             </p>
             <label className="form__label profile__label" htmlFor="email">
               Почта
@@ -92,19 +90,19 @@ function Profile() {
                 name="email"
                 pattern="[A-Za-z0-9\._%+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,4}$"
                 title="Введите корректный email"
-                // value={values.email}
+                value={values.email}
                 required
-                // onChange={handleChange}
-                // disabled={blocked}
+                onChange={handleChange}
+                disabled={blocked}
               ></input>
             </label>
             <p className="form__input-error profile__input-error">
-              {/* {errors.email} */}
+              {isNew ? errors.email : 'Введите новый адрес электронной почты'}
             </p>
-            <p className="api-error profile__api-error">{/* {apiError} */}</p>
+            <p className="api-error profile__api-error">{apiError}</p>
             <button
               className="submit-button"
-              // disabled={!isValid || !isNew || apiError || blocked}
+              disabled={!isValid || !isNew || apiError || blocked}
             >
               Сохранить
             </button>
@@ -114,13 +112,13 @@ function Profile() {
             <div className="form__label profile__label profile__label_inedited">
               Имя
               <span className="profile__input profile__input_inedited">
-                Ольга
+                {currentUser.name}
               </span>
             </div>
             <div className="form__label profile__label profile__label_inedited">
               E-mail
               <span className="profile__input profile__input_inedited">
-                lov800@yandex.ru
+                {currentUser.email}
               </span>
             </div>
             <div className="profile__options">
@@ -129,7 +127,7 @@ function Profile() {
               </button>
               <button
                 className="profile__option profile__option_type_exit"
-                // onClick={onExit}
+                onClick={onExit}
               >
                 Выйти из аккаунта
               </button>
