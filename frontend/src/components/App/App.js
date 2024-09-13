@@ -24,14 +24,14 @@ function App() {
 
   const location = useLocation();
 
-  const { register, login, getUser, editProfileData } = Api();
+  const { register, login, getUser, getHouses, getAllInfo, editProfileData } =
+    Api();
 
   //Стейты
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(
-    // JSON.parse(localStorage.getItem("loggedIn")) ||
-    false
+    JSON.parse(localStorage.getItem('loggedIn')) || false
   );
   const [registerError, setRegisterError] = React.useState('');
   function changeRegisterError(errorMessage) {
@@ -51,6 +51,12 @@ function App() {
   const [formsBlocked, setFormsBlocked] = React.useState(false);
 
   const [editSuccess, setEditSuccess] = React.useState(false);
+
+  const [houses, setHouses] = React.useState(
+    JSON.parse(localStorage.getItem('houses')) || []
+  );
+
+  const [housesError, setHousesError] = React.useState(false);
 
   //Функции управления профилем
 
@@ -125,7 +131,8 @@ function App() {
   }
 
   function signOut() {
-    localStorage.removeItem('token');
+    const keysToRemove = ['token', 'loggedIn', 'houses'];
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
 
     setCurrentUser({});
     setLoggedIn(false);
@@ -151,6 +158,32 @@ function App() {
         });
     }
   }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem('loggedIn', JSON.stringify(loggedIn));
+  }, [loggedIn]);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      getHouses()
+        .then((houses) => {
+          setHouses(houses);
+        })
+        .catch((err) => {
+          if (err === 401) {
+            signOut();
+          } else {
+            setHousesError(true);
+          }
+        });
+    } else {
+      setHouses([]);
+    }
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    localStorage.setItem('houses', JSON.stringify(houses));
+  }, [houses]);
 
   React.useEffect(() => {
     if (editSuccess === true) {
@@ -244,7 +277,7 @@ function App() {
               loggedIn ? (
                 <>
                   <Header loggedIn={loggedIn} signOut={signOut} />
-                  <Houses />
+                  <Houses houses={houses} housesError={housesError} />
                   <Footer />
                 </>
               ) : (
@@ -260,7 +293,7 @@ function App() {
               loggedIn ? (
                 <>
                   <Header loggedIn={loggedIn} signOut={signOut} />
-                  <Today />
+                  <Today housesError={housesError} />
                   <Footer />
                 </>
               ) : (

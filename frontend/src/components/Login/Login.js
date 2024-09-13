@@ -1,11 +1,8 @@
 import './Login.css';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useFormWithValidation } from '../Validation/Validation';
 
 function Login({ handleLoginSubmit, apiError, changeApiError, blocked }) {
-  const navigate = useNavigate();
-
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
 

@@ -1,17 +1,17 @@
-import "./Today.css";
-import React from "react";
-import TodayTask from "./TodayTask/TodayTask";
+import './Today.css';
+import React from 'react';
+import TodayTask from '../TodayTask/TodayTask';
 
-import defaultHouses from "../../utils/constants";
+import defaultHouses from '../../utils/constants';
 
-function Today() {
+function Today({ housesError }) {
   const d = new Date();
   const weekDay = d.getDay();
 
-  const todayDate = d.toLocaleString("ru", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
+  const todayDate = d.toLocaleString('ru', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
   });
 
   function getWeek(d, weekDay) {
@@ -51,39 +51,48 @@ function Today() {
 
   return (
     <main className="today">
-      {" "}
-      {houses.length === 0 ? (
-        <h1 className="today__title">У вас пока нет ни одного дома</h1>
+      {housesError ? (
+        <h1 className="today__title today__title_err">
+          Во время запроса произошла ошибка. Возможно, проблема с соединением
+          или сервер недоступен. Подождите немного и попробуйте ещё раз
+        </h1>
       ) : (
         <>
-          <h1 className="today__title">Задачи на сегодня ({todayDate})</h1>
-          <ul className="today__houses-list">
-            {houses.map((house, index) => (
-              <li key={house._id}>
-                <div className="item">
-                  <h2 className="item__name">{house.name}</h2>
-                </div>
-                <div
-                  className="item today__zone"
-                  key={house.zones[weekNumber].name._id}
-                >
-                  <p className="item__name item__name_type_zone">
-                    {weekend
-                      ? "В выходные задач нет"
-                      : `Текущая зона: ${house.zones[weekNumber].name}`}
-                  </p>
-                </div>
-                {!weekend && (
-                  <TodayTask
-                    task={todayTasks[index]}
-                    key={todayTasks[index]._id}
-                  ></TodayTask>
-                )}
-              </li>
-            ))}
-          </ul>
+          {' '}
+          {houses.length === 0 ? (
+            <h1 className="today__title">У вас пока нет ни одного дома</h1>
+          ) : (
+            <>
+              <h1 className="today__title">Задачи на сегодня ({todayDate})</h1>
+              <ul className="today__houses-list">
+                {houses.map((house, index) => (
+                  <li key={house._id}>
+                    <div className="item">
+                      <h2 className="item__name">{house.name}</h2>
+                    </div>
+                    <div
+                      className="item today__zone"
+                      key={house.zones[weekNumber].name._id}
+                    >
+                      <p className="item__name item__name_type_zone">
+                        {weekend
+                          ? 'В выходные задач нет'
+                          : `Текущая зона: ${house.zones[weekNumber].name}`}
+                      </p>
+                    </div>
+                    {!weekend && (
+                      <TodayTask
+                        task={todayTasks[index]}
+                        key={todayTasks[index]._id}
+                      ></TodayTask>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </>
-      )}
+      )}{' '}
     </main>
   );
 }

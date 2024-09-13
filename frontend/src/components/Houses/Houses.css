@@ -21,6 +21,13 @@
     text-align: center;
   }
 
+  .houses__title_err {
+    font-weight: 400;
+    font-size: 20px;
+    text-shadow: none;
+
+  }
+
   .houses__list {
     display: flex;
     flex-direction: column;
@@ -51,12 +58,12 @@
         padding-right: 70px;
       }
     }
-    
+
     @media screen and (max-width: 768px) {
         .houses {
             padding-left: 30px;
             padding-right: 30px;
-            
+
         }
     }
 

@@ -1,54 +1,60 @@
 .today {
-    width: 100%;
-    margin: 0;
-    padding: 20px calc((100vw - 1140px) / 2);
-    min-height: calc(100dvh - 150px);
-    background-color: #659dbd;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-  }
+  width: 100%;
+  margin: 0;
+  padding: 20px calc((100vw - 1140px) / 2);
+  min-height: calc(100dvh - 150px);
+  background-color: #659dbd;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
 
-  .today__title {
-    color: #fbeec1;
-    margin:  20px 0 40px;
-    padding: 0;
-    font-weight: 600;
-    font-size: 24px;
-    text-shadow: .5px .5px 1px #000;
-    text-align: center;
-  }
+.today__title {
+  color: #fbeec1;
+  margin: 20px 0 40px;
+  padding: 0;
+  font-weight: 600;
+  font-size: 24px;
+  text-shadow: .5px .5px 1px #000;
+  text-align: center;
+}
 
-  .today__houses-list {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    list-style-type: none;
-    margin: 0 0 20px;
-    padding: 0;
-  }
+.today__title_err {
+  font-weight: 400;
+  font-size: 20px;
+  text-shadow: none;
 
-  .today__zone {
-    margin: 0 0 20px 30px;
-    padding: 10px;
+}
+
+.today__houses-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  list-style-type: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.today__zone {
+  margin: 0 0 20px 30px;
+  padding: 10px;
 }
 
 
 
-  @media screen and (max-width: 1280px) {
-    .today {
-        padding-left: 70px;
-        padding-right: 70px;
-      }
-    }
-    
-    @media screen and (max-width: 768px) {
-        .today {
-            padding-left: 30px;
-            padding-right: 30px;
-            
-        }
-    }
+@media screen and (max-width: 1280px) {
+  .today {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+}
 
+@media screen and (max-width: 768px) {
+  .today {
+    padding-left: 30px;
+    padding-right: 30px;
+
+  }
+}

@@ -85,7 +85,27 @@ function Api() {
     });
   }
 
-  return { register, login, getUser, editProfileData };
+  function getHouses() {
+    return fetch(`${BASE_URL}/houses/find-my-houses`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-type': 'application/json',
+      },
+    }).then((res) => {
+      if (res.status === 201) {
+        return res.json();
+      } else {
+        return Promise.reject(res.status);
+      }
+    });
+  }
+
+  function getAllInfo() {
+    return Promise.all([this.getUser(), this.getHouses()]);
+  }
+
+  return { register, login, getUser, editProfileData, getHouses, getAllInfo };
 }
 
 export default Api;
