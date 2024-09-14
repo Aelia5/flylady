@@ -1,14 +1,24 @@
 import './Houses.css';
 import React from 'react';
 import House from '../House/House';
-import defaultHouses from '../../utils/constants';
+import { useFormWithValidation } from '../Validation/Validation';
 
-function Houses({ houses, housesError }) {
-  console.log(houses);
+function Houses({
+  houses,
+  housesError,
+  handleCreateHouseSubmit,
+  createHouseError,
+  changeCreateHouseError,
+}) {
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
+
   const [formOpened, setFormOpened] = React.useState(false);
   function openForm() {
     setFormOpened(true);
+    changeCreateHouseError('');
   }
+
   function closeForm() {
     setFormOpened(false);
   }
@@ -16,9 +26,9 @@ function Houses({ houses, housesError }) {
   function handleSubmit(e) {
     e.preventDefault();
     closeForm();
-    // if (isValid) {
-    //   handleEditProfileSubmit(values, resetForm, setIsEdited);
-    // }
+    if (isValid) {
+      handleCreateHouseSubmit(values, resetForm);
+    }
   }
 
   return (
@@ -47,31 +57,33 @@ function Houses({ houses, housesError }) {
           )}
           <form
             className={`form ${formOpened ? '' : 'form_hidden'}`}
+            onSubmit={handleSubmit}
             noValidate
           >
-            <label htmlFor="house" className="form__label">
+            <label htmlFor="name" className="form__label">
               Название дома
             </label>
             <input
               className="form__input"
               type="text"
               placeholder="Введите название дома"
-              id="house"
-              name="house"
+              id="name"
+              name="name"
               minLength="2"
               maxLength="30"
               pattern="[A-Za-zА-Яа-яЁё0-9\s\-]+$"
               title="Только кириллица, латиница, цифры, дефисы и пробелы"
-              // onChange={handleChange}
-              // value={values.email || ""}
+              onChange={handleChange}
+              value={values.name || ''}
               required
-              // disabled={blocked}
+              //disabled={blocked}
             ></input>
-            <p className="form__input-error">{/* {errors.house} */}</p>
+            <p className="form__input-error">{errors.name}</p>
             <button className="submit-button" onClick={handleSubmit}>
               Создать новый дом
             </button>
           </form>
+          <p className="api-error">{createHouseError}</p>
           <button
             className={`submit-button houses__button ${
               formOpened ? 'submit-button_hidden' : ''

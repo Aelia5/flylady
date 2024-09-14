@@ -24,7 +24,7 @@ function App() {
 
   const location = useLocation();
 
-  const { register, login, getUser, getHouses, getAllInfo, editProfileData } =
+  const { register, login, getUser, getHouses, editProfileData, createHouse } =
     Api();
 
   //Стейты
@@ -57,6 +57,11 @@ function App() {
   );
 
   const [housesError, setHousesError] = React.useState(false);
+
+  const [createHouseError, setCreateHouseError] = React.useState('');
+  function changeCreateHouseError(errorMessage) {
+    setCreateHouseError(errorMessage);
+  }
 
   //Функции управления профилем
 
@@ -139,6 +144,26 @@ function App() {
 
     navigate('/', { replace: true });
   }
+
+  //Функции управления домами
+
+  function handleCreateHouseSubmit(data, resetForm) {
+    createHouse(data)
+      .then((newHouse) => {
+        setHouses([...houses, newHouse]);
+        resetForm();
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err === 401) {
+          signOut();
+        } else {
+          changeCreateHouseError('При создании дома произошла ошибка');
+        }
+      });
+  }
+
+  console.log(createHouseError);
 
   //Эффекты
 
@@ -277,7 +302,13 @@ function App() {
               loggedIn ? (
                 <>
                   <Header loggedIn={loggedIn} signOut={signOut} />
-                  <Houses houses={houses} housesError={housesError} />
+                  <Houses
+                    houses={houses}
+                    housesError={housesError}
+                    handleCreateHouseSubmit={handleCreateHouseSubmit}
+                    createHouseError={createHouseError}
+                    changeCreateHouseError={changeCreateHouseError}
+                  />
                   <Footer />
                 </>
               ) : (
