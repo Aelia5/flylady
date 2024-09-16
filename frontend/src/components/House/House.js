@@ -1,9 +1,9 @@
-import "./House.css";
-import React from "react";
+import './House.css';
+import React from 'react';
 
-import Zone from "../Zone/Zone";
+import Zone from '../Zone/Zone';
 
-function House({ house }) {
+function House({ house, onDelete }) {
   const [nameEdited, setNameEdited] = React.useState(false);
   function openNameForm() {
     setNameEdited(true);
@@ -21,6 +21,10 @@ function House({ house }) {
   }
 
   const [zoneNameEdited, setZoneNameEdited] = React.useState(false);
+
+  function handleDelete() {
+    onDelete(house);
+  }
 
   return (
     <li className="house">
@@ -61,7 +65,7 @@ function House({ house }) {
         </>
       ) : (
         // Если имя не редактируется
-        <div className={`item ${zonesOrderEdited ? "item_type_reorder" : ""}`}>
+        <div className={`item ${zonesOrderEdited ? 'item_type_reorder' : ''}`}>
           <h2 className="item__name">{house.name}</h2>
           <div className="item__buttons">
             {zonesOrderEdited ? (
@@ -70,7 +74,7 @@ function House({ house }) {
                 <button
                   className="item__button item__button_type_save"
                   title="Сохранить порядок зон"
-                ></button>{" "}
+                ></button>{' '}
                 <button
                   className="item__button item__button_type_discard"
                   title="Отказаться от изменений"
@@ -80,7 +84,7 @@ function House({ house }) {
             ) : (
               // Если ничего не редактируется
               <>
-                {" "}
+                {' '}
                 <button
                   className="item__button item__button_type_edit"
                   title="Редактировать название"
@@ -95,6 +99,7 @@ function House({ house }) {
                 <button
                   className="item__button item__button_type_delete"
                   title="Удалить"
+                  onClick={handleDelete}
                 ></button>
               </>
             )}

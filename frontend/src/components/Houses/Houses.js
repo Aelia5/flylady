@@ -1,6 +1,7 @@
 import './Houses.css';
 import React from 'react';
 import House from '../House/House';
+import Popup from '../Popup/Popup';
 import { useFormWithValidation } from '../Validation/Validation';
 
 function Houses({
@@ -9,6 +10,13 @@ function Houses({
   handleCreateHouseSubmit,
   createHouseError,
   changeCreateHouseError,
+  handleDeleteHouse,
+  handleDeleteHouseConfirmation,
+  popupOpen,
+  itemToDelete,
+  nameToDelete,
+  closePopup,
+  popupError,
 }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
@@ -33,6 +41,15 @@ function Houses({
 
   return (
     <main className="houses">
+      <Popup
+        open={popupOpen}
+        itemToDelete={itemToDelete}
+        nameToDelete={nameToDelete}
+        onReject={closePopup}
+        onConfirmation={handleDeleteHouseConfirmation}
+        popupError={popupError}
+        closePopup={closePopup}
+      />
       {housesError ? (
         <>
           <h1 className="houses__title houses__title_err">
@@ -50,7 +67,11 @@ function Houses({
               <h1 className="houses__title">Мои дома</h1>
               <ul className="houses__list">
                 {houses.map((house) => (
-                  <House house={house} key={house._id} />
+                  <House
+                    house={house}
+                    key={house._id}
+                    onDelete={handleDeleteHouse}
+                  />
                 ))}
               </ul>
             </>
@@ -76,10 +97,13 @@ function Houses({
               onChange={handleChange}
               value={values.name || ''}
               required
-              //disabled={blocked}
             ></input>
             <p className="form__input-error">{errors.name}</p>
-            <button className="submit-button" onClick={handleSubmit}>
+            <button
+              className="submit-button"
+              onClick={handleSubmit}
+              disabled={!isValid}
+            >
               Создать новый дом
             </button>
           </form>

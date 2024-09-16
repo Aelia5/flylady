@@ -24,8 +24,15 @@ function App() {
 
   const location = useLocation();
 
-  const { register, login, getUser, getHouses, editProfileData, createHouse } =
-    Api();
+  const {
+    register,
+    login,
+    getUser,
+    getHouses,
+    editProfileData,
+    createHouse,
+    deleteHouse,
+  } = Api();
 
   //Стейты
 
@@ -61,6 +68,17 @@ function App() {
   const [createHouseError, setCreateHouseError] = React.useState('');
   function changeCreateHouseError(errorMessage) {
     setCreateHouseError(errorMessage);
+  }
+
+  const [popupOpen, setPopupOpen] = React.useState(false);
+
+  const [nameToDelete, setNameToDelete] = React.useState('');
+
+  const [itemToDelete, setItemToDelete] = React.useState({});
+
+  const [popupError, setPopupError] = React.useState(false);
+  function changePopupError(value) {
+    setPopupError(value);
   }
 
   //Функции управления профилем
@@ -154,7 +172,6 @@ function App() {
         resetForm();
       })
       .catch((err) => {
-        console.log(err);
         if (err === 401) {
           signOut();
         } else {
@@ -163,7 +180,38 @@ function App() {
       });
   }
 
-  console.log(createHouseError);
+  function closePopup() {
+    setPopupOpen(false);
+    setItemToDelete({});
+    setNameToDelete('');
+    changePopupError(false);
+  }
+
+  function handleDeleteHouse(house) {
+    setPopupOpen(true);
+    setItemToDelete(house);
+    setNameToDelete('дома');
+    console.log(itemToDelete);
+  }
+
+  function handleDeleteHouseConfirmation(id) {
+    deleteHouse(id)
+      .then((house) => {
+        console.log('here');
+        const updatedHouses = houses.filter((item) => {
+          return item._id !== house._id;
+        });
+        setHouses(updatedHouses);
+        closePopup();
+      })
+      .catch((err) => {
+        if (err === 401) {
+          signOut();
+        } else {
+          changePopupError(true);
+        }
+      });
+  }
 
   //Эффекты
 
@@ -308,6 +356,16 @@ function App() {
                     handleCreateHouseSubmit={handleCreateHouseSubmit}
                     createHouseError={createHouseError}
                     changeCreateHouseError={changeCreateHouseError}
+                    handleDeleteHouse={handleDeleteHouse}
+                    handleDeleteHouseConfirmation={
+                      handleDeleteHouseConfirmation
+                    }
+                    popupOpen={popupOpen}
+                    itemToDelete={itemToDelete}
+                    nameToDelete={nameToDelete}
+                    closePopup={closePopup}
+                    popupError={popupError}
+                    changePopupError={changePopupError}
                   />
                   <Footer />
                 </>
