@@ -74,6 +74,7 @@
 .item__input-error {
   padding-bottom: 0;
   font-size: 10px;
+  min-height: 12px;
 }
 
 .item__button {
@@ -125,6 +126,10 @@
 
 .item__button_type_save {
   background-image: url(../images/save-button.svg);
+}
+
+.item__button_type_save:disabled {
+  background-image: url(../images/save-button-disabled.svg);
 }
 
 .item__button_type_discard {

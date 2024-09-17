@@ -32,6 +32,7 @@ function App() {
     editProfileData,
     createHouse,
     deleteHouse,
+    renameHouse,
   } = Api();
 
   //Стейты
@@ -79,6 +80,15 @@ function App() {
   const [popupError, setPopupError] = React.useState(false);
   function changePopupError(value) {
     setPopupError(value);
+  }
+
+  //Функции управления попапом
+
+  function closePopup() {
+    setPopupOpen(false);
+    setItemToDelete({});
+    setNameToDelete('');
+    changePopupError(false);
   }
 
   //Функции управления профилем
@@ -180,24 +190,15 @@ function App() {
       });
   }
 
-  function closePopup() {
-    setPopupOpen(false);
-    setItemToDelete({});
-    setNameToDelete('');
-    changePopupError(false);
-  }
-
   function handleDeleteHouse(house) {
     setPopupOpen(true);
     setItemToDelete(house);
     setNameToDelete('дома');
-    console.log(itemToDelete);
   }
 
   function handleDeleteHouseConfirmation(id) {
     deleteHouse(id)
       .then((house) => {
-        console.log('here');
         const updatedHouses = houses.filter((item) => {
           return item._id !== house._id;
         });
@@ -208,6 +209,23 @@ function App() {
         if (err === 401) {
           signOut();
         } else {
+          changePopupError(true);
+        }
+      });
+  }
+
+  function handleRenameHouse(id, data) {
+    renameHouse(id, data)
+      .then((house) => {
+        setHouses(
+          houses.map((item) => (item._id === house._id ? house : item))
+        );
+      })
+      .catch((err) => {
+        if (err === 401) {
+          signOut();
+        } else {
+          setPopupOpen(true);
           changePopupError(true);
         }
       });
@@ -360,6 +378,7 @@ function App() {
                     handleDeleteHouseConfirmation={
                       handleDeleteHouseConfirmation
                     }
+                    handleRenameHouse={handleRenameHouse}
                     popupOpen={popupOpen}
                     itemToDelete={itemToDelete}
                     nameToDelete={nameToDelete}

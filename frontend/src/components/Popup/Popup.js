@@ -20,9 +20,7 @@ function Popup({
       <div className="popup__container">
         {popupError ? (
           <>
-            <p className="popup__text">
-              При удалении {nameToDelete} произошла ошибка
-            </p>
+            <p className="popup__text">На сервере произошла ошибка</p>
             <button
               className="popup__button popup__button_type_confirm"
               onClick={closePopup}

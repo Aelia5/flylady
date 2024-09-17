@@ -125,8 +125,26 @@ function Api() {
       method: 'DELETE',
       headers: {
         authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((res) => {
+      if (res.status === 201) {
+        return res.json();
+      } else if (res.status === 401) {
+        return Promise.reject(res.status);
+      } else {
+        return Promise.reject();
+      }
+    });
+  }
+
+  function renameHouse(id, data) {
+    return fetch(`${BASE_URL}/houses/${id}`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-type': 'application/json',
       },
+      body: JSON.stringify(data),
     }).then((res) => {
       if (res.status === 201) {
         return res.json();
@@ -150,6 +168,7 @@ function Api() {
     getHouses,
     createHouse,
     deleteHouse,
+    renameHouse,
   };
 }
 

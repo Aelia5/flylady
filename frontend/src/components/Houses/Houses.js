@@ -12,6 +12,7 @@ function Houses({
   changeCreateHouseError,
   handleDeleteHouse,
   handleDeleteHouseConfirmation,
+  handleRenameHouse,
   popupOpen,
   itemToDelete,
   nameToDelete,
@@ -71,6 +72,7 @@ function Houses({
                     house={house}
                     key={house._id}
                     onDelete={handleDeleteHouse}
+                    onRename={handleRenameHouse}
                   />
                 ))}
               </ul>
@@ -103,6 +105,7 @@ function Houses({
               className="submit-button"
               onClick={handleSubmit}
               disabled={!isValid}
+              type="submit"
             >
               Создать новый дом
             </button>
@@ -113,6 +116,7 @@ function Houses({
               formOpened ? 'submit-button_hidden' : ''
             }`}
             onClick={openForm}
+            type="button"
           >
             Создать новый дом
           </button>

@@ -2,8 +2,12 @@ import './House.css';
 import React from 'react';
 
 import Zone from '../Zone/Zone';
+import { useFormWithValidation } from '../Validation/Validation';
 
-function House({ house, onDelete }) {
+function House({ house, onDelete, onRename }) {
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
+
   const [nameEdited, setNameEdited] = React.useState(false);
   function openNameForm() {
     setNameEdited(true);
@@ -26,42 +30,50 @@ function House({ house, onDelete }) {
     onDelete(house);
   }
 
+  function handleRename(e) {
+    e.preventDefault();
+    onRename(house._id, values);
+    closeNameForm();
+    resetForm();
+  }
+
   return (
     <li className="house">
       {nameEdited ? (
         // Если имя редактируется
         <>
-          <form className="item item_type_form">
+          <form className="item item_type_form" onSubmit={handleRename}>
             <input
               className="item__name item__input"
               type="text"
               placeholder="Введите название дома"
-              id="house"
-              name="house"
+              id="name"
+              name="name"
               minLength="2"
               maxLength="30"
               pattern="[A-Za-zА-Яа-яЁё0-9\s\-]+$"
               title="Только кириллица, латиница, цифры, дефисы и пробелы"
-              // onChange={handleChange}
-              // value={values.email || ""}
+              onChange={handleChange}
+              value={values.name || ''}
               required
-              // disabled={blocked}
             ></input>
             <div className="item__buttons">
               <button
                 className="item__button item__button_type_save"
+                type="submit"
                 title="Сохранить"
+                onClick={handleRename}
+                disabled={!isValid}
               ></button>
               <button
+                type="button"
                 className="item__button item__button_type_discard"
                 title="Отказаться от изменений"
                 onClick={closeNameForm}
               ></button>
             </div>
           </form>
-          <p className="form__input-error item__input-error">
-            Тестовая ошибка{/* {errors.house} */}
-          </p>
+          <p className="form__input-error item__input-error">{errors.name}</p>
         </>
       ) : (
         // Если имя не редактируется
@@ -74,11 +86,13 @@ function House({ house, onDelete }) {
                 <button
                   className="item__button item__button_type_save"
                   title="Сохранить порядок зон"
+                  type="button"
                 ></button>{' '}
                 <button
                   className="item__button item__button_type_discard"
                   title="Отказаться от изменений"
                   onClick={closeZonesReorder}
+                  type="button"
                 ></button>
               </>
             ) : (
@@ -89,17 +103,20 @@ function House({ house, onDelete }) {
                   className="item__button item__button_type_edit"
                   title="Редактировать название"
                   onClick={openNameForm}
+                  type="button"
                 ></button>
                 <button
                   className="item__button item__button_type_reorder"
                   title="Изменить порядок зон"
                   onClick={openZonesReorder}
                   disabled={zoneNameEdited}
+                  type="button"
                 ></button>
                 <button
                   className="item__button item__button_type_delete"
                   title="Удалить"
                   onClick={handleDelete}
+                  type="button"
                 ></button>
               </>
             )}
