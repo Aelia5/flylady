@@ -13,6 +13,7 @@ function Houses({
   handleDeleteHouse,
   handleDeleteHouseConfirmation,
   handleRenameHouse,
+  handleReorderZones,
   popupOpen,
   itemToDelete,
   nameToDelete,
@@ -73,6 +74,7 @@ function Houses({
                     key={house._id}
                     onDelete={handleDeleteHouse}
                     onRename={handleRenameHouse}
+                    onZonesReorder={handleReorderZones}
                   />
                 ))}
               </ul>

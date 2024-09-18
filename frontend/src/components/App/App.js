@@ -33,6 +33,7 @@ function App() {
     createHouse,
     deleteHouse,
     renameHouse,
+    reorderZones,
   } = Api();
 
   //Стейты
@@ -231,6 +232,24 @@ function App() {
       });
   }
 
+  function handleReorderZones(id, order) {
+    const data = { newOrder: order };
+    reorderZones(id, data)
+      .then((house) => {
+        setHouses(
+          houses.map((item) => (item._id === house._id ? house : item))
+        );
+      })
+      .catch((err) => {
+        if (err === 401) {
+          signOut();
+        } else {
+          setPopupOpen(true);
+          changePopupError(true);
+        }
+      });
+  }
+
   //Эффекты
 
   React.useEffect(() => {
@@ -379,6 +398,7 @@ function App() {
                       handleDeleteHouseConfirmation
                     }
                     handleRenameHouse={handleRenameHouse}
+                    handleReorderZones={handleReorderZones}
                     popupOpen={popupOpen}
                     itemToDelete={itemToDelete}
                     nameToDelete={nameToDelete}

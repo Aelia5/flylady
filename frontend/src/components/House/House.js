@@ -1,10 +1,11 @@
 import './House.css';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import Zone from '../Zone/Zone';
 import { useFormWithValidation } from '../Validation/Validation';
 
-function House({ house, onDelete, onRename }) {
+function House({ house, onDelete, onRename, onZonesReorder }) {
+  //Стейты
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
 
@@ -26,6 +27,11 @@ function House({ house, onDelete, onRename }) {
 
   const [zoneNameEdited, setZoneNameEdited] = React.useState(false);
 
+  const [zonesValues, setZonesValues] = React.useState([1, 2, 3, 4, 5]);
+  const [zonesIsValid, setZonesIsValid] = React.useState(false);
+
+  //Функции
+
   function handleDelete() {
     onDelete(house);
   }
@@ -35,6 +41,33 @@ function House({ house, onDelete, onRename }) {
     onRename(house._id, values);
     closeNameForm();
     resetForm();
+  }
+
+  const zonesHandleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = Number(target.value);
+    const newZonesValues = zonesValues.map((item, index) =>
+      index === name - 1 ? value : item
+    );
+    const uniqueZoneValues = new Set(newZonesValues);
+    setZonesValues(newZonesValues);
+    setZonesIsValid(uniqueZoneValues.size === 5);
+  };
+
+  const zonesResetForm = useCallback(
+    (newZonesValues = [1, 2, 3, 4, 5], newZonesIsValid = false) => {
+      setZonesValues(newZonesValues);
+      setZonesIsValid(newZonesIsValid);
+    },
+    [setZonesValues, setZonesIsValid]
+  );
+
+  function handleReorder(e) {
+    e.preventDefault();
+    onZonesReorder(house._id, zonesValues);
+    closeZonesReorder();
+    zonesResetForm();
   }
 
   return (
@@ -86,7 +119,9 @@ function House({ house, onDelete, onRename }) {
                 <button
                   className="item__button item__button_type_save"
                   title="Сохранить порядок зон"
-                  type="button"
+                  type="submit"
+                  form={house._id}
+                  disabled={!zonesIsValid}
                 ></button>{' '}
                 <button
                   className="item__button item__button_type_discard"
@@ -125,7 +160,11 @@ function House({ house, onDelete, onRename }) {
       )}
       {zonesOrderEdited ? (
         // Если редактируется порядок зон
-        <form className="house__zones house__zones_type_reorder" id={house._id}>
+        <form
+          className="house__zones house__zones_type_reorder"
+          id={house._id}
+          onSubmit={handleReorder}
+        >
           {house.zones.map((zone, index) => (
             <Zone
               zone={zone}
@@ -133,6 +172,7 @@ function House({ house, onDelete, onRename }) {
               zoneNumber={index + 1}
               orderEdited={zonesOrderEdited}
               formName={house._id}
+              handleChange={zonesHandleChange}
             />
           ))}
         </form>

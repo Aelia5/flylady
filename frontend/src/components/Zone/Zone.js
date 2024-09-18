@@ -1,8 +1,16 @@
-import "./Zone.css";
-import React from "react";
-import Task from "../Task/Task";
+import './Zone.css';
+import React from 'react';
+import Task from '../Task/Task';
 
-function Zone({ zone, zoneNumber, orderEdited, formName, passEdited }) {
+function Zone({
+  zone,
+  zoneNumber,
+  orderEdited,
+  formName,
+  passEdited,
+  handleChange,
+}) {
+  //Стейты
   const [nameEdited, setNameEdited] = React.useState(false);
   function openNameForm() {
     setNameEdited(true);
@@ -30,13 +38,14 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passEdited }) {
   }
 
   const [width, setWidth] = React.useState(window.innerWidth);
+
   React.useEffect(() => {
     function handleResizeWindow() {
       setTimeout(setWidth, 500, window.innerWidth);
     }
-    window.addEventListener("resize", handleResizeWindow);
+    window.addEventListener('resize', handleResizeWindow);
     return () => {
-      window.removeEventListener("resize", handleResizeWindow);
+      window.removeEventListener('resize', handleResizeWindow);
     };
   }, []);
 
@@ -57,6 +66,7 @@ function Zone({ zone, zoneNumber, orderEdited, formName, passEdited }) {
               form={formName}
               className="item__select"
               defaultValue={zoneNumber}
+              onChange={handleChange}
             >
               <option required>1</option>
               <option required>2</option>

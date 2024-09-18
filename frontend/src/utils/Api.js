@@ -156,6 +156,25 @@ function Api() {
     });
   }
 
+  function reorderZones(id, data) {
+    return fetch(`${BASE_URL}/houses/${id}/reorder`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      if (res.status === 201) {
+        return res.json();
+      } else if (res.status === 401) {
+        return Promise.reject(res.status);
+      } else {
+        return Promise.reject();
+      }
+    });
+  }
+
   // function getAllInfo() {
   //   return Promise.all([this.getUser(), this.getHouses()]);
   // }
@@ -169,6 +188,7 @@ function Api() {
     createHouse,
     deleteHouse,
     renameHouse,
+    reorderZones,
   };
 }
 
