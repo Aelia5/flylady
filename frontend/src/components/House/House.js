@@ -4,7 +4,13 @@ import React, { useCallback } from 'react';
 import Zone from '../Zone/Zone';
 import { useFormWithValidation } from '../Validation/Validation';
 
-function House({ house, onDelete, onRename, onZonesReorder }) {
+function House({
+  house,
+  onDelete,
+  onRename,
+  onZonesReorder,
+  handleRenameZone,
+}) {
   //Стейты
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
@@ -30,6 +36,8 @@ function House({ house, onDelete, onRename, onZonesReorder }) {
   const [zonesValues, setZonesValues] = React.useState([1, 2, 3, 4, 5]);
   const [zonesIsValid, setZonesIsValid] = React.useState(false);
 
+  const [zonesError, setZonesError] = React.useState('');
+
   //Функции
 
   function handleDelete() {
@@ -53,14 +61,18 @@ function House({ house, onDelete, onRename, onZonesReorder }) {
     const uniqueZoneValues = new Set(newZonesValues);
     setZonesValues(newZonesValues);
     setZonesIsValid(uniqueZoneValues.size === 5);
+    if (!isValid) {
+      setZonesError('Номера недель не должны повторяться');
+    }
   };
 
   const zonesResetForm = useCallback(
     (newZonesValues = [1, 2, 3, 4, 5], newZonesIsValid = false) => {
       setZonesValues(newZonesValues);
       setZonesIsValid(newZonesIsValid);
+      setZonesError('');
     },
-    [setZonesValues, setZonesIsValid]
+    [setZonesValues, setZonesIsValid, setZonesError]
   );
 
   function handleReorder(e) {
@@ -110,53 +122,58 @@ function House({ house, onDelete, onRename, onZonesReorder }) {
         </>
       ) : (
         // Если имя не редактируется
-        <div className={`item ${zonesOrderEdited ? 'item_type_reorder' : ''}`}>
-          <h2 className="item__name">{house.name}</h2>
-          <div className="item__buttons">
-            {zonesOrderEdited ? (
-              // Если редактируется порядок зон
-              <>
-                <button
-                  className="item__button item__button_type_save"
-                  title="Сохранить порядок зон"
-                  type="submit"
-                  form={house._id}
-                  disabled={!zonesIsValid}
-                ></button>{' '}
-                <button
-                  className="item__button item__button_type_discard"
-                  title="Отказаться от изменений"
-                  onClick={closeZonesReorder}
-                  type="button"
-                ></button>
-              </>
-            ) : (
-              // Если ничего не редактируется
-              <>
-                {' '}
-                <button
-                  className="item__button item__button_type_edit"
-                  title="Редактировать название"
-                  onClick={openNameForm}
-                  type="button"
-                ></button>
-                <button
-                  className="item__button item__button_type_reorder"
-                  title="Изменить порядок зон"
-                  onClick={openZonesReorder}
-                  disabled={zoneNameEdited}
-                  type="button"
-                ></button>
-                <button
-                  className="item__button item__button_type_delete"
-                  title="Удалить"
-                  onClick={handleDelete}
-                  type="button"
-                ></button>
-              </>
-            )}
+        <>
+          <div className={`item ${zonesOrderEdited && 'item_type_form'}`}>
+            <h2 className="item__name">{house.name}</h2>
+            <div className="item__buttons">
+              {zonesOrderEdited ? (
+                // Если редактируется порядок зон
+                <>
+                  <button
+                    className="item__button item__button_type_save"
+                    title="Сохранить порядок зон"
+                    type="submit"
+                    form={house._id}
+                    disabled={!zonesIsValid}
+                  ></button>{' '}
+                  <button
+                    className="item__button item__button_type_discard"
+                    title="Отказаться от изменений"
+                    onClick={closeZonesReorder}
+                    type="button"
+                  ></button>
+                </>
+              ) : (
+                // Если ничего не редактируется
+                <>
+                  {' '}
+                  <button
+                    className="item__button item__button_type_edit"
+                    title="Редактировать название"
+                    onClick={openNameForm}
+                    type="button"
+                  ></button>
+                  <button
+                    className="item__button item__button_type_reorder"
+                    title="Изменить порядок зон"
+                    onClick={openZonesReorder}
+                    disabled={zoneNameEdited}
+                    type="button"
+                  ></button>
+                  <button
+                    className="item__button item__button_type_delete"
+                    title="Удалить"
+                    onClick={handleDelete}
+                    type="button"
+                  ></button>
+                </>
+              )}
+            </div>
           </div>
-        </div>
+          {zonesOrderEdited && (
+            <p className="form__input-error item__input-error">{zonesError}</p>
+          )}
+        </>
       )}
       {zonesOrderEdited ? (
         // Если редактируется порядок зон
@@ -169,10 +186,10 @@ function House({ house, onDelete, onRename, onZonesReorder }) {
             <Zone
               zone={zone}
               key={zone._id}
-              zoneNumber={index + 1}
+              zoneNumber={index}
               orderEdited={zonesOrderEdited}
-              formName={house._id}
-              handleChange={zonesHandleChange}
+              handleChangeOrder={zonesHandleChange}
+              houseId={house._id}
             />
           ))}
         </form>
@@ -183,10 +200,11 @@ function House({ house, onDelete, onRename, onZonesReorder }) {
             <Zone
               zone={zone}
               key={zone._id}
-              zoneNumber={index + 1}
+              zoneNumber={index}
+              houseId={house._id}
               orderEdited={zonesOrderEdited}
-              formName=""
               passEdited={setZoneNameEdited}
+              onRename={handleRenameZone}
             />
           ))}
         </ul>

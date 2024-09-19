@@ -1,15 +1,20 @@
 import './Zone.css';
 import React from 'react';
 import Task from '../Task/Task';
+import { useFormWithValidation } from '../Validation/Validation';
 
 function Zone({
+  houseId,
   zone,
   zoneNumber,
   orderEdited,
-  formName,
   passEdited,
-  handleChange,
+  handleChangeOrder,
+  onRename,
 }) {
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
+
   //Стейты
   const [nameEdited, setNameEdited] = React.useState(false);
   function openNameForm() {
@@ -39,6 +44,13 @@ function Zone({
 
   const [width, setWidth] = React.useState(window.innerWidth);
 
+  function handleRename(e) {
+    e.preventDefault();
+    onRename(houseId, zoneNumber, values);
+    closeNameForm();
+    resetForm();
+  }
+
   React.useEffect(() => {
     function handleResizeWindow() {
       setTimeout(setWidth, 500, window.innerWidth);
@@ -62,11 +74,11 @@ function Zone({
             )}
 
             <select
-              name={zoneNumber}
-              form={formName}
+              name={zoneNumber + 1}
+              form={houseId}
               className="item__select"
-              defaultValue={zoneNumber}
-              onChange={handleChange}
+              defaultValue={zoneNumber + 1}
+              onChange={handleChangeOrder}
             >
               <option required>1</option>
               <option required>2</option>
@@ -82,24 +94,25 @@ function Zone({
           {nameEdited ? (
             // Если редактируется имя
             <>
-              <form className="item item_type_form">
+              <form className="item item_type_form" onSubmit={handleRename}>
                 <input
                   className="item__name item__name_type_zone item__input"
                   type="text"
                   placeholder="Введите название зоны"
-                  id="zone"
-                  name="zone"
+                  id="name"
+                  name="name"
                   minLength="2"
                   maxLength="100"
-                  // onChange={handleChange}
-                  // value={values.email || ""}
+                  onChange={handleChange}
+                  value={values.name || ''}
                   required
-                  // disabled={blocked}
                 ></input>
                 <div className="item__buttons">
                   <button
                     className="item__button item__button_type_save"
                     title="Сохранить"
+                    type="submit"
+                    disabled={!isValid}
                   ></button>
                   <button
                     className="item__button item__button_type_discard"
@@ -109,7 +122,7 @@ function Zone({
                 </div>
               </form>
               <p className="form__input-error item__input-error">
-                Тестовая ошибка{/* {errors.house} */}
+                {errors.name}
               </p>
             </>
           ) : (
@@ -117,7 +130,7 @@ function Zone({
             <>
               <div className="item">
                 <h2 className="item__name item__name_type_zone">
-                  Неделя {zoneNumber}. {zone.name}
+                  Неделя {zoneNumber + 1}. {zone.name}
                 </h2>
                 <div className="item__buttons">
                   {tasksOpened ? (
