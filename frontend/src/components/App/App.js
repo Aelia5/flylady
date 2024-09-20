@@ -35,6 +35,7 @@ function App() {
     renameHouse,
     reorderZones,
     renameZone,
+    addTask,
   } = Api();
 
   //Стейты
@@ -268,6 +269,23 @@ function App() {
       });
   }
 
+  function handleAddTask(id, number, data) {
+    addTask(id, number, data)
+      .then((house) => {
+        setHouses(
+          houses.map((item) => (item._id === house._id ? house : item))
+        );
+      })
+      .catch((err) => {
+        if (err === 401) {
+          signOut();
+        } else {
+          setPopupOpen(true);
+          changePopupError(true);
+        }
+      });
+  }
+
   //Эффекты
 
   React.useEffect(() => {
@@ -418,6 +436,7 @@ function App() {
                     handleRenameHouse={handleRenameHouse}
                     handleReorderZones={handleReorderZones}
                     handleRenameZone={handleRenameZone}
+                    handleAddTask={handleAddTask}
                     popupOpen={popupOpen}
                     itemToDelete={itemToDelete}
                     nameToDelete={nameToDelete}

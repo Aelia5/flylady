@@ -11,6 +11,7 @@ function Zone({
   passEdited,
   handleChangeOrder,
   onRename,
+  handleAddTask,
 }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
@@ -44,10 +45,19 @@ function Zone({
 
   const [width, setWidth] = React.useState(window.innerWidth);
 
-  function handleRename(e) {
+  function handleNameSubmit(e) {
     e.preventDefault();
-    onRename(houseId, zoneNumber, values);
+    const newName = { name: values.zone };
+    onRename(houseId, zoneNumber, newName);
     closeNameForm();
+    resetForm();
+  }
+
+  function handleTaskSubmit(e) {
+    e.preventDefault();
+    const newName = { name: values.task };
+    handleAddTask(houseId, zoneNumber, newName);
+    closeAddForm();
     resetForm();
   }
 
@@ -94,17 +104,17 @@ function Zone({
           {nameEdited ? (
             // Если редактируется имя
             <>
-              <form className="item item_type_form" onSubmit={handleRename}>
+              <form className="item item_type_form" onSubmit={handleNameSubmit}>
                 <input
                   className="item__name item__name_type_zone item__input"
                   type="text"
                   placeholder="Введите название зоны"
-                  id="name"
-                  name="name"
+                  id="zone"
+                  name="zone"
                   minLength="2"
                   maxLength="100"
                   onChange={handleChange}
-                  value={values.name || ''}
+                  value={values.zone || ''}
                   required
                 ></input>
                 <div className="item__buttons">
@@ -122,7 +132,7 @@ function Zone({
                 </div>
               </form>
               <p className="form__input-error item__input-error">
-                {errors.name}
+                {errors.zone}
               </p>
             </>
           ) : (
@@ -166,7 +176,10 @@ function Zone({
                   <ul className="zone__tasks">
                     {addFormOpened && (
                       <li className="task">
-                        <form className="item item_type_task item_type_form">
+                        <form
+                          className="item item_type_task item_type_form"
+                          onSubmit={handleTaskSubmit}
+                        >
                           <input
                             className="item__name item__name_type_task item__input"
                             type="text"
@@ -175,25 +188,26 @@ function Zone({
                             name="task"
                             minLength="2"
                             maxLength="300"
-                            // onChange={handleChange}
-                            // value={values.email || ""}
+                            onChange={handleChange}
+                            value={values.task || ''}
                             required
-                            // disabled={blocked}
                           ></input>
                           <div className="item__buttons">
                             <button
                               className="item__button item__button_type_save"
                               title="Сохранить"
+                              type="submit"
                             ></button>
                             <button
                               className="item__button item__button_type_discard"
                               title="Отказаться от изменений"
                               onClick={closeAddForm}
+                              type="button"
                             ></button>
                           </div>
                         </form>
                         <p className="form__input-error item__input-error">
-                          Тестовая ошибка{/* {errors.house} */}
+                          {errors.task}
                         </p>
                       </li>
                     )}

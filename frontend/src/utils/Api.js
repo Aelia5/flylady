@@ -85,6 +85,16 @@ function Api() {
     });
   }
 
+  function returnRes(res) {
+    if (res.status === 201) {
+      return res.json();
+    } else if (res.status === 401) {
+      return Promise.reject(res.status);
+    } else {
+      return Promise.reject();
+    }
+  }
+
   function getHouses() {
     return fetch(`${BASE_URL}/houses/find-my-houses`, {
       method: 'GET',
@@ -93,11 +103,7 @@ function Api() {
         'Content-type': 'application/json',
       },
     }).then((res) => {
-      if (res.status === 201) {
-        return res.json();
-      } else {
-        return Promise.reject(res.status);
-      }
+      return returnRes(res);
     });
   }
 
@@ -110,13 +116,7 @@ function Api() {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      if (res.status === 201) {
-        return res.json();
-      } else if (res.status === 401) {
-        return Promise.reject(res.status);
-      } else {
-        return Promise.reject();
-      }
+      return returnRes(res);
     });
   }
 
@@ -127,13 +127,7 @@ function Api() {
         authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     }).then((res) => {
-      if (res.status === 201) {
-        return res.json();
-      } else if (res.status === 401) {
-        return Promise.reject(res.status);
-      } else {
-        return Promise.reject();
-      }
+      return returnRes(res);
     });
   }
 
@@ -146,13 +140,7 @@ function Api() {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      if (res.status === 201) {
-        return res.json();
-      } else if (res.status === 401) {
-        return Promise.reject(res.status);
-      } else {
-        return Promise.reject();
-      }
+      return returnRes(res);
     });
   }
 
@@ -165,13 +153,7 @@ function Api() {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      if (res.status === 201) {
-        return res.json();
-      } else if (res.status === 401) {
-        return Promise.reject(res.status);
-      } else {
-        return Promise.reject();
-      }
+      return returnRes(res);
     });
   }
 
@@ -184,13 +166,20 @@ function Api() {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      if (res.status === 201) {
-        return res.json();
-      } else if (res.status === 401) {
-        return Promise.reject(res.status);
-      } else {
-        return Promise.reject();
-      }
+      return returnRes(res);
+    });
+  }
+
+  function addTask(id, number, data) {
+    return fetch(`${BASE_URL}/houses/${id}/${number}/new-task`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      return returnRes(res);
     });
   }
 
@@ -209,6 +198,7 @@ function Api() {
     renameHouse,
     reorderZones,
     renameZone,
+    addTask,
   };
 }
 

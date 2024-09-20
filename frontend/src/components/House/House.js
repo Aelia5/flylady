@@ -10,6 +10,7 @@ function House({
   onRename,
   onZonesReorder,
   handleRenameZone,
+  handleAddTask,
 }) {
   //Стейты
   const { values, handleChange, errors, isValid, resetForm } =
@@ -205,6 +206,7 @@ function House({
               orderEdited={zonesOrderEdited}
               passEdited={setZoneNameEdited}
               onRename={handleRenameZone}
+              handleAddTask={handleAddTask}
             />
           ))}
         </ul>

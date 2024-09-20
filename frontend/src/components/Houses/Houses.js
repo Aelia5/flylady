@@ -15,6 +15,7 @@ function Houses({
   handleRenameHouse,
   handleReorderZones,
   handleRenameZone,
+  handleAddTask,
   popupOpen,
   itemToDelete,
   nameToDelete,
@@ -77,6 +78,7 @@ function Houses({
                     onRename={handleRenameHouse}
                     onZonesReorder={handleReorderZones}
                     handleRenameZone={handleRenameZone}
+                    handleAddTask={handleAddTask}
                   />
                 ))}
               </ul>
