@@ -11,6 +11,7 @@ function House({
   onZonesReorder,
   handleRenameZone,
   handleAddTask,
+  handleDeleteTask,
 }) {
   //Стейты
   const { values, handleChange, errors, isValid, resetForm } =
@@ -124,7 +125,7 @@ function House({
       ) : (
         // Если имя не редактируется
         <>
-          <div className={`item ${zonesOrderEdited && 'item_type_form'}`}>
+          <div className={`item ${zonesOrderEdited ? 'item_type_form' : ''}`}>
             <h2 className="item__name">{house.name}</h2>
             <div className="item__buttons">
               {zonesOrderEdited ? (
@@ -207,6 +208,7 @@ function House({
               passEdited={setZoneNameEdited}
               onRename={handleRenameZone}
               handleAddTask={handleAddTask}
+              handleDeleteTask={handleDeleteTask}
             />
           ))}
         </ul>

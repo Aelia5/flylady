@@ -1,13 +1,17 @@
-import "./Task.css";
-import React from "react";
+import './Task.css';
+import React from 'react';
 
-function Task({ task }) {
+function Task({ task, houseId, zoneNumber, taskNumber, onDelete }) {
   const [nameEdited, setNameEdited] = React.useState(false);
   function openNameForm() {
     setNameEdited(true);
   }
   function closeNameForm() {
     setNameEdited(false);
+  }
+
+  function handleDeleteClick() {
+    onDelete(task, houseId, zoneNumber, taskNumber);
   }
 
   return (
@@ -58,6 +62,8 @@ function Task({ task }) {
               <button
                 className="item__button item__button_type_delete"
                 title="Удалить задачу"
+                type="button"
+                onClick={handleDeleteClick}
               ></button>
             </div>
           </div>

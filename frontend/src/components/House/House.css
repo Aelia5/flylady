@@ -1,24 +1,25 @@
 .house {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
-    padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  padding-bottom: 10px;
 
 }
 
 .house__zones {
-    list-style-type: none;
-    margin: 0 0 22px 30px;
+  list-style-type: none;
+  margin: 0 0 22px 30px;
+  padding: 0;
 }
 
 .house__zones_type_reorder {
-margin-bottom: 28px;
+  margin-bottom: 28px;
 }
 
 
 @media screen and (max-width: 426px) {
-    .house__zones {
-        margin-left: 0;
-    }
+  .house__zones {
+    margin-left: 0;
+  }
 }

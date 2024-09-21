@@ -36,6 +36,7 @@ function App() {
     reorderZones,
     renameZone,
     addTask,
+    deleteTask,
   } = Api();
 
   //Стейты
@@ -80,6 +81,8 @@ function App() {
 
   const [itemToDelete, setItemToDelete] = React.useState({});
 
+  const [taskToChangeData, setTaskToChangeData] = React.useState({});
+
   const [popupError, setPopupError] = React.useState(false);
   function changePopupError(value) {
     setPopupError(value);
@@ -92,6 +95,7 @@ function App() {
     setItemToDelete({});
     setNameToDelete('');
     changePopupError(false);
+    setTaskToChangeData({});
   }
 
   //Функции управления профилем
@@ -285,6 +289,33 @@ function App() {
         }
       });
   }
+  function handleDeleteTask(task, houseId, zoneNumber, taskNumber) {
+    setPopupOpen(true);
+    setItemToDelete(task);
+    setNameToDelete('задачи');
+    setTaskToChangeData({
+      houseId: houseId,
+      zoneNumber: zoneNumber,
+      taskNumber: taskNumber,
+    });
+  }
+
+  function handleDeleteTaskConfirmation(data) {
+    deleteTask(data)
+      .then((house) => {
+        setHouses(
+          houses.map((item) => (item._id === house._id ? house : item))
+        );
+        closePopup();
+      })
+      .catch((err) => {
+        if (err === 401) {
+          signOut();
+        } else {
+          changePopupError(true);
+        }
+      });
+  }
 
   //Эффекты
 
@@ -437,9 +468,12 @@ function App() {
                     handleReorderZones={handleReorderZones}
                     handleRenameZone={handleRenameZone}
                     handleAddTask={handleAddTask}
+                    handleDeleteTask={handleDeleteTask}
+                    handleDeleteTaskConfirmation={handleDeleteTaskConfirmation}
                     popupOpen={popupOpen}
                     itemToDelete={itemToDelete}
                     nameToDelete={nameToDelete}
+                    taskToChangeData={taskToChangeData}
                     closePopup={closePopup}
                     popupError={popupError}
                     changePopupError={changePopupError}

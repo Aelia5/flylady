@@ -16,9 +16,12 @@ function Houses({
   handleReorderZones,
   handleRenameZone,
   handleAddTask,
+  handleDeleteTask,
+  handleDeleteTaskConfirmation,
   popupOpen,
   itemToDelete,
   nameToDelete,
+  taskToChangeData,
   closePopup,
   popupError,
 }) {
@@ -49,8 +52,10 @@ function Houses({
         open={popupOpen}
         itemToDelete={itemToDelete}
         nameToDelete={nameToDelete}
+        taskToChangeData={taskToChangeData}
         onReject={closePopup}
-        onConfirmation={handleDeleteHouseConfirmation}
+        onHouseConfirmation={handleDeleteHouseConfirmation}
+        onTaskConfirmation={handleDeleteTaskConfirmation}
         popupError={popupError}
         closePopup={closePopup}
       />
@@ -79,6 +84,7 @@ function Houses({
                     onZonesReorder={handleReorderZones}
                     handleRenameZone={handleRenameZone}
                     handleAddTask={handleAddTask}
+                    handleDeleteTask={handleDeleteTask}
                   />
                 ))}
               </ul>

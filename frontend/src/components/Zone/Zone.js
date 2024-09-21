@@ -12,6 +12,7 @@ function Zone({
   handleChangeOrder,
   onRename,
   handleAddTask,
+  handleDeleteTask,
 }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
@@ -140,7 +141,8 @@ function Zone({
             <>
               <div className="item">
                 <h2 className="item__name item__name_type_zone">
-                  Неделя {zoneNumber + 1}. {zone.name}
+                  {width > 425 && 'Неделя '}
+                  {zoneNumber + 1}. {zone.name}
                 </h2>
                 <div className="item__buttons">
                   {tasksOpened ? (
@@ -211,8 +213,15 @@ function Zone({
                         </p>
                       </li>
                     )}
-                    {zone.tasks.map((task) => (
-                      <Task task={task} key={task._id} />
+                    {zone.tasks.map((task, index) => (
+                      <Task
+                        task={task}
+                        key={task._id}
+                        onDelete={handleDeleteTask}
+                        houseId={houseId}
+                        zoneNumber={zoneNumber}
+                        taskNumber={index}
+                      />
                     ))}
                   </ul>
                 </>

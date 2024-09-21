@@ -5,16 +5,20 @@ function Popup({
   open,
   itemToDelete,
   nameToDelete,
+  taskToChangeData,
   onReject,
-  onConfirmation,
+  onHouseConfirmation,
+  onTaskConfirmation,
   popupError,
   closePopup,
 }) {
   function handleConfirmation() {
-    console.log(itemToDelete._id);
-    onConfirmation(itemToDelete._id);
+    if (nameToDelete === 'дома') {
+      onHouseConfirmation(itemToDelete._id);
+    } else if (nameToDelete === 'задачи') {
+      onTaskConfirmation(taskToChangeData);
+    }
   }
-
   return (
     <div className={`popup ${open && 'popup_open'}`}>
       <div className="popup__container">
@@ -24,6 +28,7 @@ function Popup({
             <button
               className="popup__button popup__button_type_confirm"
               onClick={closePopup}
+              type="button"
             >
               Закрыть
             </button>
@@ -32,19 +37,21 @@ function Popup({
           <>
             {' '}
             <p className="popup__text">
-              Удаление {nameToDelete} {itemToDelete.name}.
+              Удаление {nameToDelete} "{itemToDelete.name}".
             </p>
             <p className="popup__text">Вы уверены?</p>
             <div className="popup__buttons">
               <button
                 className="popup__button popup__button_type_confirm"
                 onClick={handleConfirmation}
+                type="button"
               >
                 Да
               </button>
               <button
                 className="popup__button popup__button_type_reject"
                 onClick={onReject}
+                type="button"
               >
                 Нет
               </button>
