@@ -69,6 +69,7 @@
 
 .item__input:focus {
   outline: none;
+
 }
 
 .item__input-error {

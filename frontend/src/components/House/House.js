@@ -12,6 +12,7 @@ function House({
   handleRenameZone,
   handleAddTask,
   handleDeleteTask,
+  handleRenameTask,
 }) {
   //Стейты
   const { values, handleChange, errors, isValid, resetForm } =
@@ -20,9 +21,11 @@ function House({
   const [nameEdited, setNameEdited] = React.useState(false);
   function openNameForm() {
     setNameEdited(true);
+    values.name = house.name;
   }
   function closeNameForm() {
     setNameEdited(false);
+    resetForm();
   }
 
   const [zonesOrderEdited, setZonesOrderEdited] = React.useState(false);
@@ -50,7 +53,6 @@ function House({
     e.preventDefault();
     onRename(house._id, values);
     closeNameForm();
-    resetForm();
   }
 
   const zonesHandleChange = (event) => {
@@ -103,6 +105,7 @@ function House({
               onChange={handleChange}
               value={values.name || ''}
               required
+              autoFocus
             ></input>
             <div className="item__buttons">
               <button
@@ -209,6 +212,7 @@ function House({
               onRename={handleRenameZone}
               handleAddTask={handleAddTask}
               handleDeleteTask={handleDeleteTask}
+              handleRenameTask={handleRenameTask}
             />
           ))}
         </ul>

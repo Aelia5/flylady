@@ -8,10 +8,18 @@ module.exports.validateUserName = celebrate({
     .unknown(true),
 });
 
-module.exports.validatePlace = celebrate({
+module.exports.validateHouse = celebrate({
   body: Joi.object()
     .keys({
       name: Joi.string().required().min(2).max(30),
+    })
+    .unknown(true),
+});
+
+module.exports.validateZone = celebrate({
+  body: Joi.object()
+    .keys({
+      name: Joi.string().required().min(2).max(100),
     })
     .unknown(true),
 });

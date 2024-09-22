@@ -198,6 +198,22 @@ function Api() {
     });
   }
 
+  function renameTask(data, name) {
+    return fetch(
+      `${BASE_URL}/houses/${data.houseId}/${data.zoneNumber}/${data.taskNumber}/rename`,
+      {
+        method: 'PATCH',
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(name),
+      }
+    ).then((res) => {
+      return returnRes(res);
+    });
+  }
+
   // function getAllInfo() {
   //   return Promise.all([this.getUser(), this.getHouses()]);
   // }
@@ -215,6 +231,7 @@ function Api() {
     renameZone,
     addTask,
     deleteTask,
+    renameTask,
   };
 }
 

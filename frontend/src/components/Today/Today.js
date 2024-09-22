@@ -22,10 +22,10 @@ function Today({ housesError }) {
 
   const [houses, setHouses] = React.useState(defaultHouses);
 
-  const [weekend, setWeekend] = React.useState(weekDay === 6 || weekDay === 7);
+  const [weekend, setWeekend] = React.useState(weekDay === 6 || weekDay === 0);
 
   React.useEffect(() => {
-    if (weekDay === 6 || weekDay === 7) {
+    if (weekDay === 6 || weekDay === 0) {
       setWeekend(true);
     } else {
       setWeekend(false);

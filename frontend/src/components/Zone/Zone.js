@@ -13,6 +13,7 @@ function Zone({
   onRename,
   handleAddTask,
   handleDeleteTask,
+  handleRenameTask,
 }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
@@ -22,10 +23,12 @@ function Zone({
   function openNameForm() {
     setNameEdited(true);
     passEdited(true);
+    values.zone = zone.name;
   }
   function closeNameForm() {
     setNameEdited(false);
     passEdited(false);
+    resetForm();
   }
 
   const [tasksOpened, setTasksOpened] = React.useState(false);
@@ -51,7 +54,6 @@ function Zone({
     const newName = { name: values.zone };
     onRename(houseId, zoneNumber, newName);
     closeNameForm();
-    resetForm();
   }
 
   function handleTaskSubmit(e) {
@@ -117,6 +119,7 @@ function Zone({
                   onChange={handleChange}
                   value={values.zone || ''}
                   required
+                  autoFocus
                 ></input>
                 <div className="item__buttons">
                   <button
@@ -221,6 +224,7 @@ function Zone({
                         houseId={houseId}
                         zoneNumber={zoneNumber}
                         taskNumber={index}
+                        onRename={handleRenameTask}
                       />
                     ))}
                   </ul>
