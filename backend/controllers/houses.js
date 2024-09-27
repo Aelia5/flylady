@@ -15,9 +15,6 @@ const { defaultZones } = require('../utils/constants');
 const notFoundMessage = 'Такого дома не существует';
 const forbiddenMessage = 'Вы не можете редактировать или удалять чужой дом';
 
-const momentObj = moment();
-const d = momentObj.format('YYYY-MM-DD');
-
 module.exports.createHouse = (req, res, next) => {
   const { name } = req.body;
   House.create({ name, owner: req.user._id, zones: defaultZones })
@@ -49,16 +46,6 @@ module.exports.deleteHouse = (req, res, next) => {
     .then((house) =>
       checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
     )
-    // .then((house) => {
-    //   const zonesToDelete = [];
-    //   house.zones.forEach((zone) => {
-    //     zonesToDelete.push(zone._id);
-    //   });
-    //   Zone.deleteMany({ _id: { $in: zonesToDelete } })
-    //     .then(() => House.findByIdAndDelete(house._id))
-    //     .then(() => res.status(SUCCESS_CODE).send(house))
-    //     .catch(next);
-    // })
     .then((house) => House.findByIdAndDelete(house._id))
     .then((house) => res.status(SUCCESS_CODE).send(house))
     .catch((err) => {
@@ -249,6 +236,8 @@ module.exports.completeTask = (req, res, next) => {
       checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
     )
     .then((house) => {
+      const momentObj = moment();
+      const d = momentObj.format('YYYY-MM-DD');
       const completedTask = house.zones[req.params.zone].tasks[0];
       house.zones[req.params.zone].tasks.shift();
       house.zones[req.params.zone].tasks.push(completedTask);
