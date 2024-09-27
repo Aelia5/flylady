@@ -17,6 +17,7 @@ const zoneSchema = new mongoose.Schema({
       },
     },
   ],
+  fulfilled: { type: Date },
 });
 
 const Zone = mongoose.model('zone', zoneSchema);

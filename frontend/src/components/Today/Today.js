@@ -2,10 +2,12 @@ import './Today.css';
 import React from 'react';
 import TodayTask from '../TodayTask/TodayTask';
 
-import defaultHouses from '../../utils/constants';
-
-function Today({ housesError }) {
+function Today({ houses, housesError, handleFulfilTask, handleResetDate }) {
   const d = new Date();
+  // const [weekDay, setWeekDay] = React.useState(
+  //   localStorage.getItem('weekDay') || d.getDay()
+  // );
+
   const weekDay = d.getDay();
 
   const todayDate = d.toLocaleString('ru', {
@@ -20,9 +22,13 @@ function Today({ housesError }) {
     return weekOfMonth;
   }
 
-  const [houses, setHouses] = React.useState(defaultHouses);
-
   const [weekend, setWeekend] = React.useState(weekDay === 6 || weekDay === 0);
+
+  // React.useEffect(() => {
+  //   if (localStorage.getItem('weekDay') !== weekDay) {
+  //     localStorage.setItem('weekDay');
+  //   }
+  // });
 
   React.useEffect(() => {
     if (weekDay === 6 || weekDay === 0) {
@@ -35,19 +41,19 @@ function Today({ housesError }) {
   const [weekNumber, setWeekNumber] = React.useState(getWeek(d, weekDay));
   React.useEffect(() => {
     getWeek(d, weekDay);
-  }, [d, weekDay]);
+  }, [weekDay]);
 
-  function getTodayTasks(houses) {
-    return houses.map((house) => {
-      return house.zones[weekNumber].tasks[0].name;
-    });
-  }
+  // function getTodayTasks(houses) {
+  //   return houses.map((house) => {
+  //     return house.zones[weekNumber].tasks[0].name;
+  //   });
+  // }
 
-  const [todayTasks, setTodayTasks] = React.useState(getTodayTasks(houses));
+  // // const [todayTasks, setTodayTasks] = React.useState(getTodayTasks(houses));
 
-  //   React.useEffect(() => {
-  //     setTodayTasks(getTodayTasks(houses));
-  //   }, [d]);
+  // React.useEffect(() => {
+  //   setTodayTasks(getTodayTasks(houses));
+  // }, [weekDay, houses]);
 
   return (
     <main className="today">
@@ -66,7 +72,7 @@ function Today({ housesError }) {
               <h1 className="today__title">Задачи на сегодня ({todayDate})</h1>
               <ul className="today__houses-list">
                 {houses.map((house, index) => (
-                  <li key={house._id}>
+                  <li key={house._id} className="today_house">
                     <div className="item">
                       <h2 className="item__name">{house.name}</h2>
                     </div>
@@ -82,8 +88,14 @@ function Today({ housesError }) {
                     </div>
                     {!weekend && (
                       <TodayTask
-                        task={todayTasks[index]}
-                        key={todayTasks[index]._id}
+                        // task={todayTasks[index]}
+                        // key={todayTasks[index]._id}
+                        task={house.zones[weekNumber].tasks[0].name}
+                        onCheck={handleFulfilTask}
+                        houseId={house._id}
+                        zoneNumber={weekNumber}
+                        fulfilDate={house.zones[weekNumber].fulfilled}
+                        resetDate={handleResetDate}
                       ></TodayTask>
                     )}
                   </li>

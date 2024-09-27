@@ -214,9 +214,29 @@ function Api() {
     });
   }
 
-  // function getAllInfo() {
-  //   return Promise.all([this.getUser(), this.getHouses()]);
-  // }
+  function fulfilTask(houseId, zoneNumber) {
+    return fetch(`${BASE_URL}/houses/${houseId}/${zoneNumber}/complete`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-type': 'application/json',
+      },
+    }).then((res) => {
+      return returnRes(res);
+    });
+  }
+
+  function resetDate(houseId, zoneNumber) {
+    return fetch(`${BASE_URL}/houses/${houseId}/${zoneNumber}/reset`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-type': 'application/json',
+      },
+    }).then((res) => {
+      return returnRes(res);
+    });
+  }
 
   return {
     register,
@@ -232,6 +252,8 @@ function Api() {
     addTask,
     deleteTask,
     renameTask,
+    fulfilTask,
+    resetDate,
   };
 }
 

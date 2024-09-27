@@ -1,3 +1,4 @@
+const moment = require('moment');
 const House = require('../models/house');
 
 const ValidationError = require('../errors/validation-err');
@@ -13,6 +14,9 @@ const { defaultZones } = require('../utils/constants');
 
 const notFoundMessage = 'Такого дома не существует';
 const forbiddenMessage = 'Вы не можете редактировать или удалять чужой дом';
+
+const momentObj = moment();
+const d = momentObj.format('YYYY-MM-DD');
 
 module.exports.createHouse = (req, res, next) => {
   const { name } = req.body;
@@ -248,6 +252,33 @@ module.exports.completeTask = (req, res, next) => {
       const completedTask = house.zones[req.params.zone].tasks[0];
       house.zones[req.params.zone].tasks.shift();
       house.zones[req.params.zone].tasks.push(completedTask);
+      house.zones[req.params.zone].fulfilled = d;
+      return house;
+    })
+    .then((house) =>
+      House.findByIdAndUpdate(
+        house._id,
+        { zones: house.zones },
+        { new: true, runValidators: true }
+      )
+    )
+    .then((house) => res.status(SUCCESS_CODE).send(house))
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        next(new ValidationError(err.message || validationErrorMessage));
+      } else {
+        next(err);
+      }
+    });
+};
+
+module.exports.resetDate = (req, res, next) => {
+  House.findById(req.params.id)
+    .then((house) =>
+      checkAvailability(house, req.user._id, notFoundMessage, forbiddenMessage)
+    )
+    .then((house) => {
+      house.zones[req.params.zone].fulfilled = '';
       return house;
     })
     .then((house) =>

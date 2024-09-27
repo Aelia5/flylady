@@ -157,6 +157,10 @@
   background-image: url(../images/check-button.svg);
 }
 
+.item__button_type_refresh {
+  background-image: url(../images/refresh-button.svg);
+}
+
 .item__select {
   height: 28px;
   border: none;

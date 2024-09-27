@@ -38,6 +38,8 @@ function App() {
     addTask,
     deleteTask,
     renameTask,
+    fulfilTask,
+    resetDate,
   } = Api();
 
   //Стейты
@@ -335,6 +337,40 @@ function App() {
       });
   }
 
+  function handleFulfilTask(houseId, zoneNumber) {
+    fulfilTask(houseId, zoneNumber)
+      .then((house) => {
+        setHouses(
+          houses.map((item) => (item._id === house._id ? house : item))
+        );
+      })
+      .catch((err) => {
+        if (err === 401) {
+          signOut();
+        } else {
+          setPopupOpen(true);
+          changePopupError(true);
+        }
+      });
+  }
+
+  function handleResetDate(houseId, zoneNumber) {
+    resetDate(houseId, zoneNumber)
+      .then((house) => {
+        setHouses(
+          houses.map((item) => (item._id === house._id ? house : item))
+        );
+      })
+      .catch((err) => {
+        if (err === 401) {
+          signOut();
+        } else {
+          setPopupOpen(true);
+          changePopupError(true);
+        }
+      });
+  }
+
   //Эффекты
 
   React.useEffect(() => {
@@ -512,7 +548,12 @@ function App() {
               loggedIn ? (
                 <>
                   <Header loggedIn={loggedIn} signOut={signOut} />
-                  <Today housesError={housesError} />
+                  <Today
+                    houses={houses}
+                    housesError={housesError}
+                    handleFulfilTask={handleFulfilTask}
+                    handleResetDate={handleResetDate}
+                  />
                   <Footer />
                 </>
               ) : (

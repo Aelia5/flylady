@@ -6,6 +6,7 @@ const {
   validateZoneNumber,
   validateZoneOrder,
   validateTask,
+  validateDate,
 } = require('../middlewares/validate');
 
 const {
@@ -19,6 +20,7 @@ const {
   deleteTask,
   renameTask,
   completeTask,
+  resetDate,
 } = require('../controllers/houses');
 
 router.post('/new-house', validateHouse, createHouse);
@@ -66,7 +68,10 @@ router.patch(
   '/:id/:zone/complete',
   validateId,
   validateZoneNumber,
+  validateDate,
   completeTask
 );
+
+router.patch('/:id/:zone/reset', validateId, validateZoneNumber, resetDate);
 
 module.exports = router;
