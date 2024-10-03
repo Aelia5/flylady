@@ -4,9 +4,6 @@ import TodayTask from '../TodayTask/TodayTask';
 
 function Today({ houses, housesError, handleFulfilTask, handleResetDate }) {
   const d = new Date();
-  // const [weekDay, setWeekDay] = React.useState(
-  //   localStorage.getItem('weekDay') || d.getDay()
-  // );
 
   const weekDay = d.getDay();
 
@@ -16,19 +13,13 @@ function Today({ houses, housesError, handleFulfilTask, handleResetDate }) {
     year: 'numeric',
   });
 
-  function getWeek(d, weekDay) {
-    const date = d.getDate();
-    const weekOfMonth = Math.ceil((date - 1 - weekDay) / 7);
-    return weekOfMonth;
-  }
+  // function getWeek(d, weekDay) {
+  //   const date = d.getDate();
+  //   const weekOfMonth = Math.ceil((date - 1 - weekDay) / 7);
+  //   return weekOfMonth;
+  // }
 
   const [weekend, setWeekend] = React.useState(weekDay === 6 || weekDay === 0);
-
-  // React.useEffect(() => {
-  //   if (localStorage.getItem('weekDay') !== weekDay) {
-  //     localStorage.setItem('weekDay');
-  //   }
-  // });
 
   React.useEffect(() => {
     if (weekDay === 6 || weekDay === 0) {
@@ -38,22 +29,12 @@ function Today({ houses, housesError, handleFulfilTask, handleResetDate }) {
     }
   }, [weekDay]);
 
-  const [weekNumber, setWeekNumber] = React.useState(getWeek(d, weekDay));
-  React.useEffect(() => {
-    getWeek(d, weekDay);
-  }, [weekDay]);
-
-  // function getTodayTasks(houses) {
-  //   return houses.map((house) => {
-  //     return house.zones[weekNumber].tasks[0].name;
-  //   });
-  // }
-
-  // // const [todayTasks, setTodayTasks] = React.useState(getTodayTasks(houses));
+  // const [weekNumber, setWeekNumber] = React.useState(getWeek(d, weekDay));
+  const weekNumber = Math.ceil((d.getDate() - 1 - weekDay) / 7);
 
   // React.useEffect(() => {
-  //   setTodayTasks(getTodayTasks(houses));
-  // }, [weekDay, houses]);
+  //   getWeek(d, weekDay);
+  // }, [weekDay]);
 
   return (
     <main className="today">
@@ -88,8 +69,6 @@ function Today({ houses, housesError, handleFulfilTask, handleResetDate }) {
                     </div>
                     {!weekend && (
                       <TodayTask
-                        // task={todayTasks[index]}
-                        // key={todayTasks[index]._id}
                         task={house.zones[weekNumber].tasks[0].name}
                         onCheck={handleFulfilTask}
                         houseId={house._id}

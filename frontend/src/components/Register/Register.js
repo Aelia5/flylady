@@ -19,10 +19,8 @@ function Register({
   }
 
   React.useEffect(() => {
-    if (apiError) {
-      changeApiError('');
-    }
-  }, [values]);
+    changeApiError('');
+  }, [changeApiError, values]);
 
   return (
     <main className="register">
@@ -84,7 +82,7 @@ function Register({
           <p className="api-error">{apiError}</p>
           <button
             type="submit"
-            className="submit-button"
+            className="button"
             disabled={!isValid || apiError || blocked}
           >
             Зарегистрироваться

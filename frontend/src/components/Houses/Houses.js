@@ -116,7 +116,7 @@ function Houses({
             ></input>
             <p className="form__input-error">{errors.name}</p>
             <button
-              className="submit-button"
+              className="button"
               onClick={handleSubmit}
               disabled={!isValid}
               type="submit"
@@ -126,8 +126,8 @@ function Houses({
           </form>
           <p className="api-error">{createHouseError}</p>
           <button
-            className={`submit-button houses__button ${
-              formOpened ? 'submit-button_hidden' : ''
+            className={`button houses__button ${
+              formOpened ? 'button_hidden' : ''
             }`}
             onClick={openForm}
             type="button"

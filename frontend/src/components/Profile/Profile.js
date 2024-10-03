@@ -1,6 +1,8 @@
 import './Profile.css';
 import React from 'react';
+
 import { useFormWithValidation } from '../Validation/Validation';
+
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile({
@@ -19,12 +21,14 @@ function Profile({
     useFormWithValidation();
 
   const [isEdited, setIsEdited] = React.useState(false);
+
   function openEdit() {
     setIsEdited(true);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+
     if (isValid) {
       handleEditProfileSubmit(values, resetForm, setIsEdited);
     }
@@ -40,22 +44,27 @@ function Profile({
   }, [values, currentUser]);
 
   React.useEffect(() => {
-    resetForm(currentUser, {}, false);
-  }, []);
+    resetForm(
+      currentUser,
+      {},
+
+      false
+    );
+  }, [currentUser, resetForm]);
 
   React.useEffect(() => {
-    if (apiError) {
-      changeApiError('');
-    }
-  }, [values]);
+    changeApiError('');
+  }, [values, changeApiError]);
 
   return (
     <main className="profile">
       <section className="profile__container">
         <h1 className="form-title">
           {editSuccess && !isEdited
-            ? `Изменения успешно сохранены!`
-            : `Привет, ${currentUser.name}!`}
+            ? `Изменения успешно сохранены !`
+            : `Привет, ${currentUser.name}
+
+       !`}
         </h1>
         {isEdited ? (
           <form className="form" onSubmit={handleSubmit} noValidate>
@@ -75,6 +84,7 @@ function Profile({
                 onChange={handleChange}
                 required
                 disabled={blocked}
+                autoFocus
               ></input>
             </label>
             <p className="form__input-error profile__input-error">
@@ -99,9 +109,9 @@ function Profile({
             <p className="form__input-error profile__input-error">
               {isNew ? errors.email : 'Введите новый адрес электронной почты'}
             </p>
-            <p className="api-error profile__api-error">{apiError}</p>
+            <p className="api-error profile__api-error"> {apiError}</p>
             <button
-              className="submit-button"
+              className="button"
               disabled={!isValid || !isNew || apiError || blocked}
             >
               Сохранить

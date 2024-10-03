@@ -49,19 +49,19 @@ function App() {
     JSON.parse(localStorage.getItem('loggedIn')) || false
   );
   const [registerError, setRegisterError] = React.useState('');
-  function changeRegisterError(errorMessage) {
+  const changeRegisterError = React.useCallback((errorMessage) => {
     setRegisterError(errorMessage);
-  }
+  }, []);
 
   const [loginError, setLoginError] = React.useState('');
-  function changeLoginError(errorMessage) {
+  const changeLoginError = React.useCallback((errorMessage) => {
     setLoginError(errorMessage);
-  }
+  }, []);
 
   const [profileError, setProfileError] = React.useState('');
-  function changeProfileError(errorMessage) {
+  const changeProfileError = React.useCallback((errorMessage) => {
     setProfileError(errorMessage);
-  }
+  }, []);
 
   const [formsBlocked, setFormsBlocked] = React.useState(false);
 
@@ -173,7 +173,7 @@ function App() {
       });
   }
 
-  function signOut() {
+  const signOut = React.useCallback(() => {
     const keysToRemove = ['token', 'loggedIn', 'houses'];
     keysToRemove.forEach((key) => localStorage.removeItem(key));
 
@@ -181,9 +181,32 @@ function App() {
     setLoggedIn(false);
 
     navigate('/', { replace: true });
+  }, [navigate]);
+
+  //Общие функции управления домами
+
+  function handleErrorPopupOpen(err) {
+    if (err === 401) {
+      signOut();
+    } else {
+      changePopupError(true);
+    }
   }
 
-  //Функции управления домами
+  function handleErrorNoPopup(err) {
+    if (err === 401) {
+      signOut();
+    } else {
+      setPopupOpen(true);
+      changePopupError(true);
+    }
+  }
+
+  function updateHouses(house) {
+    setHouses(houses.map((item) => (item._id === house._id ? house : item)));
+  }
+
+  //Обработка запросов, связанных с домами
 
   function handleCreateHouseSubmit(data, resetForm) {
     createHouse(data)
@@ -215,82 +238,32 @@ function App() {
         setHouses(updatedHouses);
         closePopup();
       })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          changePopupError(true);
-        }
-      });
+      .catch((err) => handleErrorPopupOpen(err));
   }
 
   function handleRenameHouse(id, data) {
     renameHouse(id, data)
-      .then((house) => {
-        setHouses(
-          houses.map((item) => (item._id === house._id ? house : item))
-        );
-      })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          setPopupOpen(true);
-          changePopupError(true);
-        }
-      });
+      .then((house) => updateHouses(house))
+      .catch((err) => handleErrorNoPopup(err));
   }
 
   function handleReorderZones(id, order) {
     const data = { newOrder: order };
     reorderZones(id, data)
-      .then((house) => {
-        setHouses(
-          houses.map((item) => (item._id === house._id ? house : item))
-        );
-      })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          setPopupOpen(true);
-          changePopupError(true);
-        }
-      });
+      .then((house) => updateHouses(house))
+      .catch((err) => handleErrorNoPopup(err));
   }
 
   function handleRenameZone(id, number, data) {
     renameZone(id, number, data)
-      .then((house) => {
-        setHouses(
-          houses.map((item) => (item._id === house._id ? house : item))
-        );
-      })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          setPopupOpen(true);
-          changePopupError(true);
-        }
-      });
+      .then((house) => updateHouses(house))
+      .catch((err) => handleErrorNoPopup(err));
   }
 
   function handleAddTask(id, number, data) {
     addTask(id, number, data)
-      .then((house) => {
-        setHouses(
-          houses.map((item) => (item._id === house._id ? house : item))
-        );
-      })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          setPopupOpen(true);
-          changePopupError(true);
-        }
-      });
+      .then((house) => updateHouses(house))
+      .catch((err) => handleErrorNoPopup(err));
   }
   function handleDeleteTask(task, houseId, zoneNumber, taskNumber) {
     setPopupOpen(true);
@@ -306,69 +279,28 @@ function App() {
   function handleDeleteTaskConfirmation(data) {
     deleteTask(data)
       .then((house) => {
-        setHouses(
-          houses.map((item) => (item._id === house._id ? house : item))
-        );
+        updateHouses(house);
         closePopup();
       })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          changePopupError(true);
-        }
-      });
+      .catch((err) => handleErrorPopupOpen(err));
   }
 
   function handleRenameTask(data, name) {
     renameTask(data, name)
-      .then((house) => {
-        setHouses(
-          houses.map((item) => (item._id === house._id ? house : item))
-        );
-      })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          setPopupOpen(true);
-          changePopupError(true);
-        }
-      });
+      .then((house) => updateHouses(house))
+      .catch((err) => handleErrorNoPopup(err));
   }
 
   function handleFulfilTask(houseId, zoneNumber) {
     fulfilTask(houseId, zoneNumber)
-      .then((house) => {
-        setHouses(
-          houses.map((item) => (item._id === house._id ? house : item))
-        );
-      })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          setPopupOpen(true);
-          changePopupError(true);
-        }
-      });
+      .then((house) => updateHouses(house))
+      .catch((err) => handleErrorNoPopup(err));
   }
 
   function handleResetDate(houseId, zoneNumber) {
     resetDate(houseId, zoneNumber)
-      .then((house) => {
-        setHouses(
-          houses.map((item) => (item._id === house._id ? house : item))
-        );
-      })
-      .catch((err) => {
-        if (err === 401) {
-          signOut();
-        } else {
-          setPopupOpen(true);
-          changePopupError(true);
-        }
-      });
+      .then((house) => updateHouses(house))
+      .catch((err) => handleErrorNoPopup(err));
   }
 
   //Эффекты
@@ -384,11 +316,11 @@ function App() {
           setCurrentUser(userData);
           setLoggedIn(true);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          signOut();
         });
     }
-  }, []);
+  }, [getUser, signOut]);
 
   React.useEffect(() => {
     localStorage.setItem('loggedIn', JSON.stringify(loggedIn));
@@ -399,6 +331,7 @@ function App() {
       getHouses()
         .then((houses) => {
           setHouses(houses);
+          setHousesError(false);
         })
         .catch((err) => {
           if (err === 401) {
@@ -410,16 +343,14 @@ function App() {
     } else {
       setHouses([]);
     }
-  }, [currentUser]);
+  }, [loggedIn, getHouses, signOut, currentUser]);
 
   React.useEffect(() => {
     localStorage.setItem('houses', JSON.stringify(houses));
   }, [houses]);
 
   React.useEffect(() => {
-    if (editSuccess === true) {
-      setEditSuccess(false);
-    }
+    setEditSuccess(false);
   }, [location]);
 
   return (

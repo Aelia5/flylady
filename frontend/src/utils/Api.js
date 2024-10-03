@@ -1,3 +1,4 @@
+import React from 'react';
 function Api() {
   const BASE_URL = 'http://localhost:3001';
 
@@ -39,7 +40,7 @@ function Api() {
     });
   }
 
-  function getUser(token) {
+  const getUser = React.useCallback((token) => {
     return fetch(`${BASE_URL}/users/me`, {
       method: 'GET',
       headers: {
@@ -59,7 +60,7 @@ function Api() {
         );
       }
     });
-  }
+  }, []);
 
   function editProfileData(newData) {
     return fetch(`${BASE_URL}/users/me`, {
@@ -95,7 +96,7 @@ function Api() {
     }
   }
 
-  function getHouses() {
+  const getHouses = React.useCallback(() => {
     return fetch(`${BASE_URL}/houses/find-my-houses`, {
       method: 'GET',
       headers: {
@@ -105,7 +106,7 @@ function Api() {
     }).then((res) => {
       return returnRes(res);
     });
-  }
+  }, []);
 
   function createHouse(data) {
     return fetch(`${BASE_URL}/houses/new-house`, {

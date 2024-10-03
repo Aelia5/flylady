@@ -1,6 +1,6 @@
 import './Header.css';
 import React from 'react';
-import { useNavigate, Link, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 function Header({ loggedIn, signOut }) {
   const navigate = useNavigate();

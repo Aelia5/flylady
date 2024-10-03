@@ -44,7 +44,7 @@
 
 .today__zone {
   margin: 0 0 20px 30px;
-  padding: 10px;
+  padding-bottom: 10px;
 }
 
 
@@ -62,5 +62,11 @@
     padding-left: 30px;
     padding-right: 30px;
 
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .today__zone {
+    margin-left: 0;
   }
 }

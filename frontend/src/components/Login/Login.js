@@ -14,10 +14,8 @@ function Login({ handleLoginSubmit, apiError, changeApiError, blocked }) {
   }
 
   React.useEffect(() => {
-    if (apiError) {
-      changeApiError('');
-    }
-  }, [values]);
+    changeApiError('');
+  }, [changeApiError, values]);
 
   return (
     <main className="login">
@@ -59,7 +57,7 @@ function Login({ handleLoginSubmit, apiError, changeApiError, blocked }) {
           <p className="form__input-error">{errors.password}</p>
           <p className="api-error login__api-error">{apiError}</p>
           <button
-            className="login__submit-button submit-button"
+            className="login__button button"
             disabled={!isValid || apiError || blocked}
           >
             Войти
